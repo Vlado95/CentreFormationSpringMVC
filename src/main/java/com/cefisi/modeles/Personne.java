@@ -38,6 +38,11 @@ public class Personne {
 
     @Column(name = "email")
     private String email;
+    
+    @Column(name = "password")
+    private String password;
+
+    
 
     public  Personne(){
         
@@ -78,6 +83,14 @@ public class Personne {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     public Set<Promotion> getPromotions() {
         return promotions;
     }

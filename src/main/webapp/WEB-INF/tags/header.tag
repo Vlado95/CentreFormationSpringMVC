@@ -14,13 +14,33 @@
           content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <nav id="menu">
+   <nav id="menu">
+      <div class="gauche">
       <a href=".">Accueil</a> -
       <a href="projet">Projets</a> -
       <a href="session">Manipuler les sessions</a>
-      <form style="float: right" action="connexion" method="post">
+      
+      </div>
+   <%--   <form style="float: right" action="connexion" method="post">
         <button type="submit">Déconnecter ${sessionScope['user'].login}</button>
         <input type="hidden" name="action" value="deconnecter"/>
-      </form>
-    </nav>
+</form> --%>
+         <div class="droite">
+        <c:if test="${sessionScope['user'] == null}">
+          <form style="float: right" action="connexion" method="post">
+            Login :
+            <input type="text" name="login" value="${login}"/>
+            Mot de passe :
+            <input type="password" name="password" size="12"/>
+            <button type="submit">Connecter</button>
+            <br/>${msgConnexion}
+          </form>
+        </c:if>
+        <c:if test="${sessionScope['user'] != null}">
+          <form action="deconnexion" method="post">
+            <button type="submit">Déconnecter ${sessionScope['user'].nom}</button>
+          </form>
+        </c:if>
+      </div>
+   
     <hr/>
