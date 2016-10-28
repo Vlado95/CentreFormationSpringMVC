@@ -5,18 +5,24 @@
  */
 package com.cefisi.modeles;
 
-import java.sql.Connection;
+//import java.sql.Connection;
 import java.util.Date;
-import java.sql.PreparedStatement;
+/*import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-import javax.persistence.Column;
+import java.util.Calendar;*/
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.*; /*Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;*/
 
 
 /**
@@ -42,14 +48,25 @@ public class Equipe {
     
     @Column(name = "resume")
     String resume;
+    
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "membre_equipe",
+            joinColumns = @JoinColumn(name = "id_equipe"),
+            inverseJoinColumns = @JoinColumn(name = "id_personne")
+    )
+    private Set<Personne> membres = new HashSet<>();
 
-    public Equipe(Long id, Long idProjet, Long idCreateur, Date dateCreation, String resume) {
+   
+
+  /*  public Equipe(Long id, Long idProjet, Long idCreateur, Date dateCreation, String resume) {
         this.id = id;
         this.idProjet = idProjet;
         this.idCreateur = idCreateur;
         this.dateCreation = dateCreation;
         this.resume = resume;
-    }
+    }*/
 
     public Equipe() {
 
@@ -95,7 +112,15 @@ public class Equipe {
         this.resume = resume;
     }
     
-    
+     public Set<Personne> getMembres() {
+        return membres;
+    }
+
+    public void setMembres(Set<Personne> membres) {
+        this.membres = membres;
+    }
+     
+ 
   /*  public void insert() throws SQLException {
     assert idCreateur != null;
     assert resume != null && !resume.matches("/^ \t\n\r$");

@@ -13,7 +13,7 @@
                 <h1>Projets</h1>
                 <ol>
                     <c:forEach items="${projets}" var="projet">
-                        <li>${projet.getTitre()}</li>
+                        <li><a href="projet-${projet.getId()}">${projet.getTitre()}</a></li>
                         </c:forEach>
                 </ol>
             </c:if>

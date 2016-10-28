@@ -14,8 +14,10 @@
     <body>
         <h4>Spring 4 Web MVC via Annotations</h4>
         Spring says: <span class="blue">${msg}</span>
-        <a href="projet-1">projet-1</a>
-        <a href="projet-1-new-equipe">projet-1-new-equipe</a>
-        <a href="projet">projets</a>
+        <a href="projet-1">projet-1</a></br>
+        <a href="projet-1-new-equipe">projet-1-new-equipe</a></br>
+        <a href="projet">projets</a></br>
+        <a href="new-projet">new-projet</a></br>
+        <a href="equipe-1">equipe-1</a>
     </body>
 </html>

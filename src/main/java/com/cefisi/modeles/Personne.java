@@ -19,24 +19,41 @@ public class Personne {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_personne")
-    private Long id;
+    private Long idPersonne;
 
+    
     @ManyToMany(mappedBy = "etudiants")
     private Set<Promotion> promotions = new HashSet<>();
+    
+    
+    @ManyToMany(mappedBy = "membres")
+    private Set<Equipe> equipes = new HashSet<>();
 
+    @Column(name = "nom")
     private String nom;
 
+    
+    @Column(name = "prenom")
     private String prenom;
 
+    @Column(name = "email")
     private String email;
 
-    /* package*/ Personne() {
+    public  Personne(){
+        
     }
 
-    public Long getId() {
-        return id;
-    }
+ 
 
+   public Long getIdPersonne() {
+        return idPersonne;
+    }
+/*
+    public void setId(Long id) {
+        this.id = id;
+    }*/
+
+    
     public String getNom() {
         return nom;
     }
@@ -68,5 +85,14 @@ public class Personne {
     public void setPromotions(Set<Promotion> promotions) {
         this.promotions = promotions;
     }
+    
+    public Set<Equipe> getEquipes() {
+        return equipes;
+    }
+
+    public void setEquipes(Set<Equipe> equipes) {
+        this.equipes = equipes;
+    }
+
 }
 

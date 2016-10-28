@@ -35,10 +35,12 @@ public class Projet {
    /* @Column(name = "id_createur")
     private Long idCreateur;*/
     
-    @ManyToOne
+    @ManyToOne //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_createur")
     private Personne createur;
+   
 
+    
     @Column(name = "sujet")
     @Type(type = "text")
     private String sujet;
@@ -127,6 +129,11 @@ public class Projet {
         return createur;
     }
 
+    public void setCreateur(Personne createur) {
+        this.createur = createur;
+    }
+
+    
     public String getSujet() {
         return sujet;
     }

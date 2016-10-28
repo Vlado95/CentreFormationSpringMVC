@@ -20,11 +20,11 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_promotion")
     private Long id;
-
+    
     @Column(name = "nom")
     private String name;
 
-    @OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "promotion", fetch = FetchType.EAGER)
     private Set<Projet> projects = new HashSet<>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -38,6 +38,15 @@ public class Promotion {
     public Promotion() {
     }
 
+     public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
     public String getName() {
         return name;
     }

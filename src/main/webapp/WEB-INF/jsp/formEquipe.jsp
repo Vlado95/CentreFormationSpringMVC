@@ -19,5 +19,4 @@
       <div>${message}</div>
     </form:form>
       
-  </body>
-</html>
+
