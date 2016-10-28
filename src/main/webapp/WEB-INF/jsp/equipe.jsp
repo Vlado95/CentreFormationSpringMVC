@@ -17,7 +17,7 @@
         <br/>Date de creation : ${equipe.dateCreation}
         <br/>Createur : ${equipe.createur.nom} 
          
-       
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         <c:if test="${message ==null}">
             <c:if test="${equipe.membres.size() != 0}">
            <br/>Membres :      <ol>

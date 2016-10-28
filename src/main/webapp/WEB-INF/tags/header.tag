@@ -10,8 +10,9 @@
   <head>
     <title>${title}</title>
     <link rel="stylesheet" type="text/css" href="${cp}/static/css/site.css"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
   </head>
   <body>
    <nav id="menu">
@@ -21,10 +22,6 @@
       <a href="session">Manipuler les sessions</a>
       
       </div>
-   <%--   <form style="float: right" action="connexion" method="post">
-        <button type="submit">Déconnecter ${sessionScope['user'].login}</button>
-        <input type="hidden" name="action" value="deconnecter"/>
-</form> --%>
          <div class="droite">
         <c:if test="${sessionScope['user'] == null}">
           <form style="float: right" action="connexion" method="post">

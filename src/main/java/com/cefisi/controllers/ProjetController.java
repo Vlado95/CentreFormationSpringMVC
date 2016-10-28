@@ -85,7 +85,7 @@ public class ProjetController {
             System.out.println("ok");
             map.put("message", "Projet enregistré");
         }
-        return "formProjet";
+        return "projets";
     }
 
     /*   @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
