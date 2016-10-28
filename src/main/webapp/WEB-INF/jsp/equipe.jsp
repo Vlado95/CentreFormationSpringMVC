@@ -15,13 +15,15 @@
     <body>
         <br/>Resume : ${equipe.resume}
         <br/>Date de creation : ${equipe.dateCreation}
-        <br/>Createur : ${equipe.idCreateur} 
+        <br/>Createur : ${equipe.createur.nom} 
          
         
         <c:if test="${message ==null}">
             <c:if test="${equipe.membres.size() != 0}">
            <br/>Membres :      <ol>
+               <li>${equipe.createur.nom}</li>
              <c:forEach items="${equipe.membres}" var="membre">
+                      
                     <li>${membre.nom}</li>
                 </c:forEach>
                 </ol>

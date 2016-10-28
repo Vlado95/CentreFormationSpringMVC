@@ -9,8 +9,8 @@
 <%-- <p:header title="${titre}"/> --%>
     <h1>${titre}</h1>
     <form:form method="post" modelAttribute="equipe">
-      Createur: <form:input path="idCreateur"/>
-      <form:errors path="idCreateur" cssClass="erreur"/>
+      Createur: <form:input path="createur.idPersonne"/>
+      <form:errors path="createur.idPersonne" cssClass="erreur"/>
       <br/>
       Resume : <form:input path="resume"/>
       <form:errors path="resume" cssClass="erreur"/>

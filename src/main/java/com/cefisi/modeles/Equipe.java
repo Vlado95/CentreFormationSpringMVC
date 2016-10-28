@@ -40,8 +40,12 @@ public class Equipe {
     @Column(name = "id_projet")
     Long idProjet;
     
-    @Column(name = "id_createur")
-    Long idCreateur;
+    /*@Column(name = "id_createur")
+    Long idCreateur;*/
+    
+    @ManyToOne //(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_createur")
+    private Personne createur;
     
     @Column(name = "date_creation")
     Date dateCreation;
@@ -50,7 +54,7 @@ public class Equipe {
     String resume;
     
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "membre_equipe",
             joinColumns = @JoinColumn(name = "id_equipe"),
@@ -60,13 +64,13 @@ public class Equipe {
 
    
 
-  /*  public Equipe(Long id, Long idProjet, Long idCreateur, Date dateCreation, String resume) {
+    public Equipe(Long id, Long idProjet, Personne createur, Date dateCreation, String resume) {
         this.id = id;
         this.idProjet = idProjet;
-        this.idCreateur = idCreateur;
+        this.createur = createur;
         this.dateCreation = dateCreation;
         this.resume = resume;
-    }*/
+    }
 
     public Equipe() {
 
@@ -88,12 +92,12 @@ public class Equipe {
         this.idProjet = idProjet;
     }
 
-    public Long getIdCreateur() {
-        return idCreateur;
+    public Personne getCreateur() {
+        return createur;
     }
 
-    public void setIdCreateur(Long idCreateur) {
-        this.idCreateur = idCreateur;
+    public void setCreateur(Personne createur) {
+        this.createur = createur;
     }
 
     public Date getDateCreation() {
