@@ -7,7 +7,7 @@
         <br/>Promotion : ${projet.promotion.name}
         <br/>Nb projets de la promotion : ${projet.promotion.projects.size()}
         <br/>Nb etudiants de la promotion : ${projet.promotion.etudiants.size()}
-        <br/>Créé par : ${projet.createur.nom} ${projet.createur.prenom}
+        <br/>Créé par : ${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}
         <br/>Sujet : ${projet.getSujet()}
         <br/>Créer le : ${projet.getDateCreation()}
         <br/>Fin le : ${projet.getDateLimite()}
@@ -45,12 +45,22 @@
         <c:if test="${message != null}">
             <h1>${message}</h1>
         </c:if>
+            
+                      <br/>Non Membres :    <ol>
+             <c:forEach items="${membreB}" var="membre">
+                      
+                    <li>${membre.idPersonne} ${membre.nom}</li>
+                </c:forEach>
+                </ol>
+            
         Etudiants de la promotion :
         <c:forEach items="${projet.promotion.etudiants}" var="etudiant2">
 
             <br/>${etudiant2.idPersonne} ${etudiant2.nom}
         </c:forEach>
 
+            
+            
         <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     </body>

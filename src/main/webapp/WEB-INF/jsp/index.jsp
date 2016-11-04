@@ -11,6 +11,7 @@
         <li><a href="projet-1-new-equipe">projet-1-new-equipe</a></li>
         <li><a href="projet">projets</a></li>
         <li><a href="new-projet">new-projet</a></li>
+        <li><a href="projet-4-modifier">projet-4-modifier</a></li>
         <li><a href="equipe-1">equipe-1</a></li>
     </ul>
     </body>

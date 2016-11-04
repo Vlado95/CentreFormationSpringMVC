@@ -16,12 +16,9 @@
         <br/>Resume : ${equipe.resume}
         <br/>Date de creation : ${equipe.dateCreation}
         <br/>Createur : ${equipe.createur.nom} 
-         
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         <c:if test="${message ==null}">
             <c:if test="${equipe.membres.size() != 0}">
            <br/>Membres :      <ol>
-               <li>${equipe.createur.nom}</li>
              <c:forEach items="${equipe.membres}" var="membre">
                       
                     <li>${membre.nom}</li>
@@ -35,6 +32,13 @@
         <c:if test="${message != null}">
             <h1>${message}</h1>
         </c:if>
+            
+          <br/>Non Membres :    <ol>
+             <c:forEach items="${membreB}" var="membre">
+                      
+                    <li>${membre.nom}</li>
+                </c:forEach>
+                </ol>
     </body>
 </html>
  

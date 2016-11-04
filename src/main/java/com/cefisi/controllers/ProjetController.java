@@ -45,9 +45,18 @@ public class ProjetController {
         List<Equipe> equipes = entityManager.createQuery("select E from Equipe E where E.idProjet = ?1 order by E.id")
                 .setParameter(1, idProjet)
                 .getResultList();
-        System.out.println("nb equipes : " + equipes.size());
+
+        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.idProjet = ?2)")
+                 .setParameter(1, projet.getPromotion().getId())
+                 .setParameter(2,idProjet )
+                 .getResultList();
+     
+       System.out.println("promoton id: " + projet.getPromotion().getId());
+        System.out.println("createur: " + projet.getCreateur().getIdPersonne());
+        System.out.println("nb students without groupe : " + membreB.size());
         map.put("projet", projet);
         map.put("equipes", equipes);
+        map.put("membreB", membreB);
         return "projet";
     }
 
@@ -71,7 +80,7 @@ public class ProjetController {
         Personne createur = entityManager.find(Personne.class, idPersonne);
         projet.setCreateur(createur);
         projet.setPromotion(promotion);
-        projet.setDateCreation(new Date());
+        projet.setDateCreation(new Date(Calendar.getInstance().getTimeInMillis()));
         map.put("action", "Créer");
         map.put("titre", "Créer une projet");
         // System.out.println("idcreateur " + projet.getIdCreateur());
@@ -86,6 +95,51 @@ public class ProjetController {
             map.put("message", "Projet enregistré");
         }
         return "projets";
+    }
+
+    @RequestMapping(value = "/projet-{idProjet}-modifier",
+            method = RequestMethod.GET)
+    public String askModify(ModelMap map,
+            @PathVariable(value = "idProjet") long idProjet) throws SQLException {
+        Projet projet = entityManager.find(Projet.class, idProjet); //  Produit.getById(idProduit);
+        /* if (projet == null) {
+      throw new ItemNotFoundException();
+    }*/
+        map.put("projet", projet);
+        map.put("action", "Modifier");
+        map.put("titre", "Modifier le projet n° " + projet.getId());
+        return "formProjet";
+    }
+
+    @Transactional
+    @RequestMapping(value = "/projet-{idProjet}-modifier",
+            method = RequestMethod.POST)
+    public String doModify(
+            @Valid Projet projet, // Injection + vérification des annotations du bean
+            BindingResult result, // Les erreurs suite à l'injection sont ici
+            ModelMap map,
+            @PathVariable(value = "idProjet") long idProjet) throws SQLException {
+        System.out.println(projet);
+        projet.setId(idProjet);
+        if (result.hasErrors()) {
+            System.out.println("erreurs");
+        } else {
+            // Le idProduit est dans l'url, pas dans le formulaire
+            Projet projetOld = entityManager.find(Projet.class, idProjet);
+            projet.setCreateur(projetOld.getCreateur());
+            projet.setPromotion(projetOld.getPromotion());
+
+            System.out.println("date DE cration " + projetOld.getDateCreation());
+            projet.setDateCreation(projetOld.getDateCreation());
+            map.put("projet", projet);
+            map.put("action", "Modifier");
+            map.put("titre", "Modifier le produit n° " + projet.getId());
+            entityManager.merge(projet);
+            entityManager.flush();
+            System.out.println("ok");
+            map.put("message", "Projet modifié");
+        }
+        return "formProjet";
     }
 
     /*   @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)

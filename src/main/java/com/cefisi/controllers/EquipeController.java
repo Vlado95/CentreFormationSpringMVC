@@ -7,13 +7,16 @@ package com.cefisi.controllers;
 
 import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
+import com.cefisi.modeles.Projet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.Valid;
 import static jdk.nashorn.internal.objects.NativeArray.map;
 import org.springframework.stereotype.Controller;
@@ -41,12 +44,21 @@ public class EquipeController {
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-      /*  List<Equipe> equipes = entityManager.createQuery("select E from Equipe E where E.idProjet = ?1 order by E.id")
-                .setParameter(1, idProjet)
-                .getResultList();
-        System.out.println("nb membres : " + equipe.getMembres().getIdPersonne());*/
+        /*List<Projet> membreB  = entityManager.createQuery("select P from Projet P where P.id NOT IN " + "(select E.idProjet from Equipe E where E.id = ?1)")
+                     .setParameter(1, idEquipe)
+        .getResultList(); */
+        
+      /*  Query query = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select E.membres.idPersonne from Equipe E where E.id = ?1)");
+                     query.setParameter(1, idEquipe);
+        List<Personne> membreB =query.getResultList();*/
+      
+      List<Personne> membreB = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.id = ?1)")
+                     .setParameter(1, idEquipe)
+        .getResultList();
+      
+        System.out.println("nb equipes : " + membreB.size());
         map.put("equipe", equipe);
-        //map.put("equipes", equipes);
+        map.put("membreB", membreB);
         return "equipe";
     }
     
