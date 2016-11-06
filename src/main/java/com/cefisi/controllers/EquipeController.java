@@ -39,30 +39,21 @@ public class EquipeController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    
     @Transactional
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-        /*List<Projet> membreB  = entityManager.createQuery("select P from Projet P where P.id NOT IN " + "(select E.idProjet from Equipe E where E.id = ?1)")
-                     .setParameter(1, idEquipe)
-        .getResultList(); */
-        
-      /*  Query query = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select E.membres.idPersonne from Equipe E where E.id = ?1)");
-                     query.setParameter(1, idEquipe);
-        List<Personne> membreB =query.getResultList();*/
-      
-      List<Personne> membreB = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.id = ?1)")
-                     .setParameter(1, idEquipe)
-        .getResultList();
-      
+        List<Personne> membreB = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.id = ?1)")
+                .setParameter(1, idEquipe)
+                .getResultList();
+
         System.out.println("nb equipes : " + membreB.size());
         map.put("equipe", equipe);
         map.put("membreB", membreB);
         return "equipe";
     }
-    
-    
+
+      /*--creation de nouveau equipe--*/
     @RequestMapping(value = "/projet-{idProjet}-new-equipe", method = RequestMethod.GET)
     public String askNew(ModelMap map) {
         Equipe equipe = new Equipe();
@@ -76,9 +67,10 @@ public class EquipeController {
     @Transactional
     @RequestMapping(value = "/projet-{idProjet}-new-equipe", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("equipe") Equipe equipe,
-            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet ,@RequestParam("createur.idPersonne") long idPersonne
+            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet, @RequestParam("createur.idPersonne") long idPersonne
     ) throws SQLException {
         Personne createur = entityManager.find(Personne.class, idPersonne);
+        Projet projet = entityManager.find(Projet.class, idProjet);
         equipe.setCreateur(createur);
         map.put("action", "Créer");
         map.put("titre", "Créer une equipe");
@@ -89,7 +81,7 @@ public class EquipeController {
             Set<Personne> membre = new HashSet<>(0);
             membre.add(createur);
             equipe.setMembres(membre);
-            equipe.setIdProjet(idProjet);
+            equipe.setProjet(projet);
             equipe.setDateCreation(new Date(Calendar.getInstance().getTimeInMillis()));
             entityManager.persist(equipe);
             entityManager.flush();
@@ -98,34 +90,74 @@ public class EquipeController {
         }
         return "formEquipe";
     }
+    
+    
+    /*-- ajouter des personnes dans l'equipes-- */
+
+    /**
+     *
+     * @param map
+     * @return
+     */
+
+    @RequestMapping(value = "/equipe-{idEquipe}-new-membre", method = RequestMethod.GET)
+    public String askNewMembre(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) {
+      Equipe equipe = entityManager.find(Equipe.class, idEquipe); 
+      Projet projet = equipe.getProjet();
+              List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
+                 .setParameter(1, projet.getPromotion().getId())
+                 .setParameter(2,projet.getId())
+                 .getResultList();
+      
+       System.out.println("membres: " + membreB.size());
+        map.put("equipe", equipe);
+        map.put("membreB", membreB);
+        map.put("action", "Ajouter");
+        map.put("titre", "Ajouter un nouveau membre");
+        return "formEquipe";
+    }
+    
+  /*  @RequestMapping(value = "/projet-{idProjet}-modifier",
+            method = RequestMethod.GET)
+    public String askModify(ModelMap map,
+            @PathVariable(value = "idProjet") long idProjet) throws SQLException {
+        Projet projet = entityManager.find(Projet.class, idProjet); 
+        map.put("projet", projet);
+        map.put("action", "Modifier");
+        map.put("titre", "Modifier le projet n° " + projet.getId());
+        return "formProjet";
+    }*/
+    
+    @Transactional
+    @RequestMapping(value = "/equipe-{idEquipe}-new-membre", method = RequestMethod.POST)
+    public String doNewMembre(@Valid @ModelAttribute("equipe") Equipe equipe,
+            BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @RequestParam("createur.idPersonne") long idPersonne
+    ) throws SQLException {
+        Personne membre = entityManager.find(Personne.class, idPersonne);
+        Equipe equipeOld = entityManager.find(Equipe.class, idEquipe);
+        map.put("action", "Ajouter");
+        map.put("titre", "Ajouter un nouveau membre");
+
+        if (result.hasErrors()) {
+            System.out.println("erreurs");
+        } else {
+            Set<Personne> membres = new HashSet<>(0);
+            membres.addAll(equipeOld.getMembres());
+            membres.add(membre);
+           // equipe.setMembres((Set<Personne>) membre);
+           
+            equipe.setCreateur(equipeOld.getCreateur());
+            equipe.setId(idEquipe);
+            equipe.setMembres(membres);
+            equipe.setProjet(equipeOld.getProjet());
+            equipe.setDateCreation(equipeOld.getDateCreation());
+            equipe.setResume(equipeOld.getResume());
+            entityManager.merge(equipe);
+            entityManager.flush();
+            System.out.println("ok");
+            map.put("message", "nouveau membre enregistré");
+        }
+        return "formEquipe";
+    }
 
 }
-
-//Add new Employee object
-/*       
-
-
-
-stmt.setLong(1, 1);
-      stmt.setLong(2, idCreateur);
-      stmt.setDate(3, (java.sql.Date) new Date(Calendar.getInstance().getTimeInMillis()));
-      stmt.setString(4, resume);
-
-
-
-
-
-
-
-
-EmployeeEntity emp = new EmployeeEntity();
-        emp.setEmail("lokesh@mail.com");
-        emp.setFirstName("lokesh");
-        emp.setLastName("gupta");
-         
-        //Save the employee in database
-        session.save(emp);
- 
-        //Commit the transaction
-        session.getTransaction().commit();
-        HibernateUtil.shutdown();*/

@@ -9,10 +9,14 @@ import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.Projet;
 import com.cefisi.modeles.Promotion;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -42,20 +46,31 @@ public class ProjetController {
     @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idProjet") long idProjet) throws SQLException {
         Projet projet = entityManager.find(Projet.class, idProjet);
-        List<Equipe> equipes = entityManager.createQuery("select E from Equipe E where E.idProjet = ?1 order by E.id")
+     /*  List<Equipe> equipes =entityManager.createQuery("select E from Equipe E join E.projet EP where EP.id = ?1 order by E.id")
                 .setParameter(1, idProjet)
-                .getResultList();
+               .getResultList();*/
 
-        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.idProjet = ?2)")
+        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
                  .setParameter(1, projet.getPromotion().getId())
                  .setParameter(2,idProjet )
                  .getResultList();
-     
-       System.out.println("promoton id: " + projet.getPromotion().getId());
+      List<Equipe> equipes =  projet.getEquipes();
+       LinkedHashSet<Equipe> equipesCl = new LinkedHashSet<Equipe>();
+       equipesCl.addAll(equipes);
+        equipes.clear();
+        equipes.addAll(equipesCl);
+        
+        
+                
+       System.out.println("equipes: " + projet.getEquipes().size());
+   //    System.out.println("membres id: " + membres.size());
         System.out.println("createur: " + projet.getCreateur().getIdPersonne());
-        System.out.println("nb students without groupe : " + membreB.size());
+         
+    //    System.out.println("nb students without groupe : " + membreB.size());
         map.put("projet", projet);
+        //map.put("nb", nb);
         map.put("equipes", equipes);
+     //   map.put("membres", membres);
         map.put("membreB", membreB);
         return "projet";
     }

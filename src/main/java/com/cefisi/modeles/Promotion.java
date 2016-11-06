@@ -9,8 +9,10 @@ package com.cefisi.modeles;
  *
  * @author Vladimir
  */
+import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,7 +27,8 @@ public class Promotion {
     private String name;
 
     @OneToMany(mappedBy = "promotion", fetch = FetchType.EAGER)
-    private Set<Projet> projects = new HashSet<>(0);
+  //  private Set<Projet> projects = new HashSet<>(0);
+    private List<Projet> projects = new ArrayList<>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -55,11 +58,11 @@ public class Promotion {
         this.name = name;
     }
 
-    public Set<Projet> getProjects() {
+    public List<Projet> getProjects() {
         return projects;
     }
 
-    public void setProjects(Set<Projet> projects) {
+    public void setProjects(List<Projet> projects) {
         this.projects = projects;
     }
 

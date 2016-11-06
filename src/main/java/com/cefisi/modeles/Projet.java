@@ -14,8 +14,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Projet {
@@ -38,8 +40,13 @@ public class Projet {
     @ManyToOne //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_createur")
     private Personne createur;
-   
+ 
+ @OneToMany(fetch = FetchType.EAGER)
+ @JoinColumn(name = "id_projet")
+ //private Set<Equipe> equipes = new HashSet<>();
+ private List<Equipe> equipes = new ArrayList<>();
 
+    
     
     @Column(name = "sujet")
     @Type(type = "text")
@@ -161,9 +168,16 @@ public class Projet {
     public Date getDateLimite() {
         return dateLimite;
     }
-
     public void setDateLimite(Date dateLimite) {
         this.dateLimite = dateLimite;
+    }
+    
+    public List<Equipe> getEquipes() {
+        return equipes;
+    }
+
+    public void setEquipes(List<Equipe> equipes) {
+        this.equipes = equipes;
     }
 
     @Override

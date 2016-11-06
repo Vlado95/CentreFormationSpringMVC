@@ -9,8 +9,10 @@ package com.cefisi.modeles;
  *
  * @author Vladimir
  */
+import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +29,7 @@ public class Personne {
     
     
     @ManyToMany(mappedBy = "membres")
-    private Set<Equipe> equipes = new HashSet<>();
+    private List<Equipe> equipes = new ArrayList<>();
 
     @Column(name = "nom")
     private String nom;
@@ -99,11 +101,11 @@ public class Personne {
         this.promotions = promotions;
     }
     
-    public Set<Equipe> getEquipes() {
+    public List<Equipe> getEquipes() {
         return equipes;
     }
 
-    public void setEquipes(Set<Equipe> equipes) {
+    public void setEquipes(List<Equipe> equipes) {
         this.equipes = equipes;
     }
 

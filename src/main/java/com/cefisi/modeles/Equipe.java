@@ -6,6 +6,7 @@
 package com.cefisi.modeles;
 
 //import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 /*import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;*/
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*; /*Column;
 import javax.persistence.Entity;
@@ -37,8 +39,9 @@ public class Equipe {
     @Column(name = "id_equipe")
     Long id;
     
-    @Column(name = "id_projet")
-    Long idProjet;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_projet")
+    Projet projet;
     
     /*@Column(name = "id_createur")
     Long idCreateur;*/
@@ -61,12 +64,13 @@ public class Equipe {
             inverseJoinColumns = @JoinColumn(name = "id_personne")
     )
     private Set<Personne> membres = new HashSet<>();
+   //  private List<Personne> membres = new ArrayList<>();
 
    
 
-    public Equipe(Long id, Long idProjet, Personne createur, Date dateCreation, String resume) {
+    public Equipe(Long id, Projet projet, Personne createur, Date dateCreation, String resume) {
         this.id = id;
-        this.idProjet = idProjet;
+        this.projet = projet;
         this.createur = createur;
         this.dateCreation = dateCreation;
         this.resume = resume;
@@ -84,12 +88,13 @@ public class Equipe {
         this.id = id;
     }
 
-    public Long getIdProjet() {
-        return idProjet;
+    
+    public Projet getProjet() {
+        return projet;
     }
 
-    public void setIdProjet(Long idProjet) {
-        this.idProjet = idProjet;
+    public void setProjet(Projet projet) {
+        this.projet = projet;
     }
 
     public Personne getCreateur() {
@@ -117,11 +122,11 @@ public class Equipe {
     }
     
      public Set<Personne> getMembres() {
-        return membres;
+        return (Set<Personne>) membres;
     }
 
     public void setMembres(Set<Personne> membres) {
-        this.membres = membres;
+        this.membres =  membres;
     }
      
  
