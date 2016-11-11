@@ -1,14 +1,44 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 06-Nov-2014, 21:55:03
-    Author     : john.ralston
-*/
 
-.blue {
-    color:blue;
+/*         Html, body {
+      Padding: 0;
+      Margin: 0;
+      Height: 100%;
 }
 
+
+#page {
+      Min-height: 100%;
+      position:relative;
+}
+ 
+#main {
+    padding-left: 20%;
+      Padding-bottom: 75px;    This value is the height of your footer 
+}
+ 
+#footer {
+      Position: absolute;
+      Width: 100%;
+      Bottom: 0;
+      Height: 75px;   This value is the height of your footer 
+}
+  */
+  #main {
+    padding-right: 40px;
+      Padding-bottom: 75px;    
+}
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+
+    #menu{
+        padding-left: 40px;
+    }
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }

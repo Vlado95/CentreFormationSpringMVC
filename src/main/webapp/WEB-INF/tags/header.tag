@@ -6,24 +6,25 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true" description="titre de la page" %>
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="${cp}/static/css/site.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-     <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
-  </head>
-  <body>
-   <nav id="menu">
-      <div class="gauche">
-      <a href=".">Accueil</a> -
-      <a href="projet">Projets</a> -
-      <a href="session">Manipuler les sessions</a>
+
+<!-- <ul class="nav navbar-nav">
+        <li><a href=".">Accueil</a></li>
+       <li><a href="projet">Projets</a></li>
+       <li><a href="session">Manipuler les sessions</a></li>
+       <div class="gauche">
+
       
       </div>
-         <div class="droite">
-        <c:if test="${sessionScope['user'] == null}">
+    </ul>-->
+
+      <ul class="nav navbar-nav">
+            
+        <li class="active"><a href=".">Acceuil</a></li>
+        <li><a href="projet">Projets</a></li>
+        <li><a href="session">Manipuler les sessions</a></li>
+      </ul>
+      <ul class="navbar-form nav navbar-nav navbar-right">
+        <li>        <c:if test="${sessionScope['user'] == null}">
           <form style="float: right" action="connexion" method="post">
             Login :
             <input type="text" name="login" value="${login}"/>
@@ -35,9 +36,30 @@
         </c:if>
         <c:if test="${sessionScope['user'] != null}">
           <form action="deconnexion" method="post">
-            <button type="submit">Déconnecter ${sessionScope['user'].nom}</button>
+            <button type="submit"><span class="glyphicon glyphicon-log-in"></span>Déconnecter ${sessionScope['user'].nom}</button>
           </form>
         </c:if>
+           
+      </ul>
+
+
+<!--        <div class="nav navbar-nav navbar-right">
+            
+
+      
+            
+        </div>
+    
+    
+
+   <nav id="menu">
+      <div class="gauche">
+      <a href=".">Accueil</a> -
+      <a href="projet">Projets</a> -
+      <a href="session">Manipuler les sessions</a>
+      
       </div>
+
    
-    <hr/>
+    
+   </nav>-->

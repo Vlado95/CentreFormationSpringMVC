@@ -1,9 +1,4 @@
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="cp" value="${pageContext.request.servletContext.contextPath}" scope="request" />
-<%@taglib prefix="p" tagdir="/WEB-INF/tags" %>
-    <p:header title="${titre}"/>
+<!--
         <h1>${titre}</h1>
        
     <ul>
@@ -16,7 +11,68 @@
         <li><a href="equipe-7-new-membre">equipe-7-new-membre</a></li>
         
     </ul>
-    </body>
-</html>
 
+
+-->
+
+
+<!--
+<div id="thanks"><p><a data-toggle="modal" href="#form-content" class="btn btn-primary">modal</a></p></div>
+	 model content 
+	<div id="form-content" class="modal hide fade in" style="display: none; "> 
+
+
+	        <div class="modal-header">
+	              <a class="close" data-dismiss="modal">×</a>
+	              <h3>Contact us</h3>
+	        </div>
+		<div>
+			<form class="contact">
+			<fieldset>
+		         <div class="modal-body">
+		        	 <ul class="nav nav-list">
+				<li class="nav-header">ID</li>
+				<li><input class="input-xlarge" value=" <?=$this->id ?>" type="text" name="newId"></li>
+				<li class="nav-header">NOM</li>
+				<li><input class="input-xlarge" value="<?=$this->nom ?>" type="text" name="newNom"></li>
+				<li class="nav-header">AGE</li>
+				<li><input class="input-xlarge" value="<?=$this->age ?>" type="text" name="newAge"></li>
+				<li class="nav-header">SEXE</li>
+				<li><input class="input-xlarge" value="<?=$this->sexe ?>" type="text" name="newSexe"></li>
+				</ul> 
+		        </div>
+			</fieldset>
+			</form>
+		</div>
+	     <div class="modal-footer">
+	         <button class="btn btn-success" id="submit">submit</button>
+	         <a href="#" class="btn" data-dismiss="modal">Close</a>
+  		</div>
+	 </div> 
+
+
+<script>
+ $(function() {
+//twitter bootstrap script
+	$("button#submit").click(function(){
+		   	$.ajax({
+    		   	type: "POST",
+			url: "<?=$this->url(array('controller'=>'index', 'action'=>'edit'/*, 'newId'=>$item->id, 'nom'=>$item->nom, 'age'=>$item->age, 'sexe'=>$item->genre*/))?>",
+			data: $('form.contact').serialize(),
+        		success: function(msg){
+ 	          	//	  $("#thanks").html(msg)
+ 		        	$("#form-content").modal('hide');	
+ 		        },
+			error: function(){
+				alert("failure");
+				}
+      			});
+	});
+});
+</script>
+
+
+
+
+-->
 
