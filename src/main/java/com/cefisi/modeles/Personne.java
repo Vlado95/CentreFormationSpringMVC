@@ -26,6 +26,9 @@ public class Personne {
     
     @ManyToMany(mappedBy = "etudiants")
     private Set<Promotion> promotions = new HashSet<>();
+  //  private List<Promotion> promotions = new ArrayList<>();
+
+    
     
     
     @ManyToMany(mappedBy = "membres")
@@ -41,8 +44,11 @@ public class Personne {
     @Column(name = "email")
     private String email;
     
-    @Column(name = "password")
+    @Column(name = "pwd")
     private String password;
+
+    @Column(name = "profil")
+    private Boolean profil;
 
     
 
@@ -101,6 +107,15 @@ public class Personne {
         this.promotions = promotions;
     }
     
+    
+//    public List<Promotion> getPromotions() {
+//        return promotions;
+//    }
+//
+//    public void setPromotions(List<Promotion> promotions) {
+//        this.promotions = promotions;
+//    }
+    
     public List<Equipe> getEquipes() {
         return equipes;
     }
@@ -108,6 +123,15 @@ public class Personne {
     public void setEquipes(List<Equipe> equipes) {
         this.equipes = equipes;
     }
+    
+    public Boolean getProfil() {
+        return profil;
+    }
+
+    public void setProfil(Boolean profil) {
+        this.profil = profil;
+    }
+    
 
 }
 

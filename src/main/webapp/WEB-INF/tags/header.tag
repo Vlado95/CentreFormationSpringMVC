@@ -5,18 +5,6 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true" description="titre de la page" %>
-<!DOCTYPE html>
-
-<!-- <ul class="nav navbar-nav">
-        <li><a href=".">Accueil</a></li>
-       <li><a href="projet">Projets</a></li>
-       <li><a href="session">Manipuler les sessions</a></li>
-       <div class="gauche">
-
-      
-      </div>
-    </ul>-->
-
       <ul class="nav navbar-nav">
             
         <li class="active"><a href=".">Acceuil</a></li>
@@ -36,30 +24,13 @@
         </c:if>
         <c:if test="${sessionScope['user'] != null}">
           <form action="deconnexion" method="post">
-            <button type="submit"><span class="glyphicon glyphicon-log-in"></span>Déconnecter ${sessionScope['user'].nom}</button>
+                    <p><a href="#">${sessionScope['user'].nom}</a> 
+                        <button type="submit" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-log-out"></span> Log out
+        </button>
+      </p>
+              
           </form>
         </c:if>
            
       </ul>
-
-
-<!--        <div class="nav navbar-nav navbar-right">
-            
-
-      
-            
-        </div>
-    
-    
-
-   <nav id="menu">
-      <div class="gauche">
-      <a href=".">Accueil</a> -
-      <a href="projet">Projets</a> -
-      <a href="session">Manipuler les sessions</a>
-      
-      </div>
-
-   
-    
-   </nav>-->

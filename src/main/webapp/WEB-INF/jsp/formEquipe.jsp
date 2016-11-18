@@ -4,7 +4,6 @@
     Author     : Vladimir
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%-- <p:header title="${titre}"/> --%>
@@ -18,9 +17,9 @@
 <form:form method="post" modelAttribute="equipe">
     <c:if test="${action != 'Ajouter'}">
         <div class="modal-body">            
-            Createur: <form:input path="createur.idPersonne"/>
-            <form:errors path="createur.idPersonne" cssClass="erreur"/>
-            <br/>
+<!--            Createur: <form :input path="createur.idPersonne"/>
+            <form :errors path="createur.idPersonne" cssClass="erreur"/>
+            <br/>-->
             Resume : <form:input path="resume"/>
             <form:errors path="resume" cssClass="erreur"/>
             <br/>

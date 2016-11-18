@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import static jdk.nashorn.internal.objects.NativeArray.map;
 import org.springframework.stereotype.Controller;
@@ -67,11 +68,17 @@ public class EquipeController {
     @Transactional
     @RequestMapping(value = "/projet-{idProjet}-new-equipe", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("equipe") Equipe equipe,
-            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet, @RequestParam("createur.idPersonne") long idPersonne
+            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet, 
+           // @RequestParam("createur.idPersonne") long idPersonne,
+            HttpSession session
     ) throws SQLException {
-        Personne createur = entityManager.find(Personne.class, idPersonne);
+     /*   Personne createur3 = entityManager.find(Personne.class, idPersonne);
+         
+        Personne createur2 = new Personne();*/
+        Personne createur2 =  (Personne) session.getAttribute("user");
+        // Personne createur = entityManager.find(Personne.class, createur2.getIdPersonne());
         Projet projet = entityManager.find(Projet.class, idProjet);
-        equipe.setCreateur(createur);
+        equipe.setCreateur(createur2);
         map.put("action", "Créer");
         map.put("titre", "Créer une equipe");
 
@@ -79,16 +86,17 @@ public class EquipeController {
             System.out.println("erreurs");
         } else {
             Set<Personne> membre = new HashSet<>(0);
-            membre.add(createur);
+            membre.add(createur2);
             equipe.setMembres(membre);
             equipe.setProjet(projet);
             equipe.setDateCreation(new Date(Calendar.getInstance().getTimeInMillis()));
             entityManager.persist(equipe);
             entityManager.flush();
             System.out.println("ok");
+             System.out.println("createur3: " + createur2.getIdPersonne());
             map.put("message", "Equipe enregistré");
         }
-        return "formEquipe";
+        return "redirect:/projet-{idProjet}";
     }
     
     
@@ -155,9 +163,10 @@ public class EquipeController {
             entityManager.merge(equipe);
             entityManager.flush();
             System.out.println("ok");
+            Long idProjet = equipeOld.getProjet().getId();
             map.put("message", "nouveau membre enregistré");
         }
-        return "formEquipe";
+        return "redirect:/projet-"+equipeOld.getProjet().getId();
     }
 
 }

@@ -8,6 +8,7 @@
        template="/WEB-INF/views/tiles/layouts/defaultLayout.jsp">  
        <put-attribute name="title" value="" />  
        <put-attribute name="header" value="/WEB-INF/views/tiles/template/defaultHeader.jsp" />  
+<!--              <put-attribute name="connexionHeader" value="/WEB-INF/views/tiles/template/connexionHeader.jsp" />  -->
        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/defaultMenu.jsp" />  
        <put-attribute name="body" value="" />  
        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/defaultFooter.jsp" />  
@@ -35,15 +36,21 @@
        <put-attribute name="body" value="/WEB-INF/jsp/equipe.jsp" />  
    </definition> 
    
-<!--    <definition name="formEquipe" extends="base-definition">  
-       <put-attribute name="title" value="projets" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/formEquipe.jsp" />  
-   </definition>   -->
    
+<!--   <definition name="persistenceSqlException" extends="base-definition">  
+       <put-attribute name="title" value="persistenceSqlException" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/persistenceSqlException.jsp" />  
+   </definition> -->
+   
+<!--   <definition name="formConnexion" extends="base-definition">  
+       <put-attribute name="title" value="formConnexion" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/formConnexion.jsp" />  
+   </definition>  -->
+<!--   
        <definition name="formProjet" extends="base-definition">  
        <put-attribute name="title" value="projets" />  
        <put-attribute name="body" value="/WEB-INF/jsp/formProjet.jsp" />  
-   </definition>  
+   </definition>  -->
 
 
    <!-- Product Page -->

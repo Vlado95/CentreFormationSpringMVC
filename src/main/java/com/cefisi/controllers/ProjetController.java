@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,31 +47,29 @@ public class ProjetController {
     @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idProjet") long idProjet) throws SQLException {
         Projet projet = entityManager.find(Projet.class, idProjet);
-     /*  List<Equipe> equipes =entityManager.createQuery("select E from Equipe E join E.projet EP where EP.id = ?1 order by E.id")
+        /*  List<Equipe> equipes =entityManager.createQuery("select E from Equipe E join E.projet EP where EP.id = ?1 order by E.id")
                 .setParameter(1, idProjet)
                .getResultList();*/
 
         List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
-                 .setParameter(1, projet.getPromotion().getId())
-                 .setParameter(2,idProjet )
-                 .getResultList();
-      List<Equipe> equipes =  projet.getEquipes();
-       LinkedHashSet<Equipe> equipesCl = new LinkedHashSet<Equipe>();
-       equipesCl.addAll(equipes);
+                .setParameter(1, projet.getPromotion().getId())
+                .setParameter(2, idProjet)
+                .getResultList();
+        List<Equipe> equipes = projet.getEquipes();
+        LinkedHashSet<Equipe> equipesCl = new LinkedHashSet<Equipe>();
+        equipesCl.addAll(equipes);
         equipes.clear();
         equipes.addAll(equipesCl);
-        
-        
-                
-       System.out.println("equipes: " + projet.getEquipes().size());
-   //    System.out.println("membres id: " + membres.size());
+
+        System.out.println("equipes: " + projet.getEquipes().size());
+        //    System.out.println("membres id: " + membres.size());
         System.out.println("createur: " + projet.getCreateur().getIdPersonne());
-         
-    //    System.out.println("nb students without groupe : " + membreB.size());
+
+        //    System.out.println("nb students without groupe : " + membreB.size());
         map.put("projet", projet);
         //map.put("nb", nb);
         map.put("equipes", equipes);
-     //   map.put("membres", membres);
+        //   map.put("membres", membres);
         map.put("membreB", membreB);
         return "projet";
     }
@@ -109,14 +108,14 @@ public class ProjetController {
             System.out.println("ok");
             map.put("message", "Projet enregistré");
         }
-        return "projets";
+        return "redirect:/projet";
     }
 
     @RequestMapping(value = "/projet-{idProjet}-modifier",
             method = RequestMethod.GET)
     public String askModify(ModelMap map,
             @PathVariable(value = "idProjet") long idProjet) throws SQLException {
-        Projet projet = entityManager.find(Projet.class, idProjet); //  Produit.getById(idProduit);
+        Projet projet = entityManager.find(Projet.class, idProjet);
         /* if (projet == null) {
       throw new ItemNotFoundException();
     }*/
@@ -134,27 +133,36 @@ public class ProjetController {
             BindingResult result, // Les erreurs suite à l'injection sont ici
             ModelMap map,
             @PathVariable(value = "idProjet") long idProjet) throws SQLException {
-        System.out.println(projet);
         projet.setId(idProjet);
+        System.out.println(projet);
+        System.out.println(" this is idProjet" + idProjet);
         if (result.hasErrors()) {
             System.out.println("erreurs");
         } else {
-            // Le idProduit est dans l'url, pas dans le formulaire
-            Projet projetOld = entityManager.find(Projet.class, idProjet);
-            projet.setCreateur(projetOld.getCreateur());
-            projet.setPromotion(projetOld.getPromotion());
+            // Le idProjet est dans l'url, pas dans le formulaire
 
-            System.out.println("date DE cration " + projetOld.getDateCreation());
-            projet.setDateCreation(projetOld.getDateCreation());
-            map.put("projet", projet);
-            map.put("action", "Modifier");
-            map.put("titre", "Modifier le produit n° " + projet.getId());
-            entityManager.merge(projet);
-            entityManager.flush();
-            System.out.println("ok");
-            map.put("message", "Projet modifié");
+//            Projet projetOld = entityManager.find(Projet.class, idProjet);
+//            projet.setCreateur(projetOld.getCreateur());
+//            projet.setPromotion(projetOld.getPromotion());
+//
+//            System.out.println("date DE cration " + projetOld.getDateCreation());
+//            projet.setDateCreation(projetOld.getDateCreation());
+//            map.put("projet", projet);
+//            map.put("action", "Modifier");
+//            map.put("titre", "Modifier le produit n° " + projet.getId());
+//            entityManager.merge(projet);
+//            entityManager.flush();
+//            System.out.println("ok");
+//            map.put("message", "Projet modifié");
+            String sql = "UPDATE projet SET titre=:titre, sujet=:sujet, date_limite=:date_limite WHERE id_projet=:id_projet";
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter("titre", projet.getTitre())
+                    .setParameter("sujet", projet.getSujet())
+                    .setParameter("date_limite", projet.getDateLimite())
+                    .setParameter("id_projet", projet.getId());
+            query.executeUpdate();
         }
-        return "formProjet";
+        return "redirect:/projet";
     }
 
     /*   @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)

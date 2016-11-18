@@ -1,35 +1,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@taglib prefix="p" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%> --%>
 
 
 <div class="col-sm-8">
     <div class="well">
-        <dl class="dl-horizontal " style="margin-left: 120px;">
-            <dt class="col-sm-pull-10">id :</dt><dd class="col-md-offset-4" style="margin-left: 120px;">mmmm</dd>
-            <dt>NOM :</dt><dd style="margin-left: 120px;">mfmfmfm</dd>
-            <dt>AGE :</dt><dd style="margin-left: 120px;">nsksbh</dd>
-            <dt>SEXE :</dt><dd style="margin-left: 120px;">bqbqbqivbv</dd>
-        </dl>
-
+       
         <p:header title="Projet"/>
-        <button class="btn btn-primary">Primary</button>
         <h1>Titre : ${projet.titre}</h1>
-        <br/>Promotion : ${projet.promotion.name}
-        <br/>Nb projets de la promotion : ${projet.promotion.projects.size()}
-        <br/>Nb etudiants de la promotion : ${projet.promotion.etudiants.size()}
-        <br/>Créé par : ${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}
-        <br/>Sujet : ${projet.getSujet()}
-        <br/>Créer le : ${projet.getDateCreation()}
-        <br/>Fin le : ${projet.getDateLimite()}
+         <dl class="dl-horizontal span4 offset4 centered col-md-offset-3">
+            <dt class="col-sm-pull-10">Promotion :</dt><dd class="text-left"> ${projet.promotion.name}</dd>
+            <dt class="text-right">Nb projets de la promotion :</dt><dd class="text-left">${projet.promotion.projects.size()}</dd>
+            <dt>Nb etudiants de la promotion :</dt><dd class="text-left">${projet.promotion.etudiants.size()}</dd>
+            <dt class="text-right">Crée par : </dt><dd class="text-left">${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}</dd>
+             <dt class="text-right">Sujet :</dt><dd class="text-left">${projet.getSujet()}</dd>
+            <dt>Fin le :</dt><dd class="text-left">${projet.getDateLimite()}</dd>   
+         </dl>
+        
+         <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-modifier">Modifier le projet</a>
     </div>
 
 </div>
-
-<br/>Les equipes : 
+ 
 <div class="col-sm-8 ">
-    <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-new-equipe">Créer Equipe</a>
-    <table class="table table-bordered table-curved well">
+ <div class="text-right"><a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-new-equipe">Ajouter une nouvelle equipe</a>
+ </div>
+     <table class="table table-bordered table-curved well">
         <thead>
             <tr class="label-default" style="color: white;">
                 <th>Equipes</th>
@@ -46,7 +42,7 @@
                 <ol>
                     <c:forEach items="${equipes}" var="equipe">
                         <tr>    
-                            <td>  ${equipe.resume}  </td>
+                            <td>  ${equipe.resume} <a href="#">Modifier l'equipe</a> </td>
                             <td>
 
                                 <c:if test="${message ==null}">
@@ -84,34 +80,6 @@
 
         </tbody>
     </table>   
-
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Equipes</th>
-                <th>Membres d'equipes</th>
-                <th>Personnes sans eq</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>John</td>
-                <td>Doe</td>
-                <td>john@example.com</td>
-            </tr>
-            <tr>
-                <td>Mary</td>
-                <td>Moe</td>
-                <td>mary@example.com</td>
-            </tr>
-            <tr>
-                <td>July</td>
-                <td>Dooley</td>
-                <td>july@example.com</td>
-            </tr>
-        </tbody>
-    </table>
 </div>  
 <br/>Membres qui n'ont pas equipe :  
 <c:if test="${message ==null}">
@@ -136,35 +104,6 @@ Etudiants de la promotion :
 
     <br/>${etudiant2.idPersonne} ${etudiant2.nom}
 </c:forEach>
-
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Equipes</th>
-            <th>Membres d'equipes</th>
-            <th>Personnes sans eq</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-        </tr>
-        <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
-        </tr>
-        <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-        </tr>
-    </tbody>
-</table>
-
 
 
 

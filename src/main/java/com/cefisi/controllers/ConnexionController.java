@@ -23,6 +23,16 @@ public class ConnexionController {
 
     @PersistenceContext
     private EntityManager entityManager;
+    
+    
+        @RequestMapping(value = "/connexion", method = RequestMethod.GET)
+    public String askConnexionForm(ModelMap map) {
+
+        return "formConnexion";
+    }
+    
+    
+    
 
     @RequestMapping(value = "/connexion", method = RequestMethod.POST)
     public String connecter(HttpSession session,
@@ -51,6 +61,6 @@ public class ConnexionController {
 //    session.removeAttribute("user");
         // Termine la session
         session.invalidate();
-        return "index";
+        return "formConnexion";
     }
 }

@@ -29,7 +29,12 @@
         <div  >
             <div id="header">
                 <header >
+                    <%--<c:if test="${sessionScope['user'] != null}">--%>
                     <tiles:insertAttribute name="header" />
+                    <%--</c:if>--%>
+                   <%--<c:if test="${sessionScope['user'] == null}">--%>
+                    <%--<tiles:insertAttribute name="connexionHeader" />--%>
+                    <%--</c:if>--%> 
                 </header>
             </div>
             <div class=" text-center">

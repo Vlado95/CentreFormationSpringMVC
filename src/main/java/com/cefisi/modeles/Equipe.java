@@ -57,7 +57,7 @@ public class Equipe {
     String resume;
     
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER /* , cascade = CascadeType.ALL*/)
     @JoinTable(
             name = "membre_equipe",
             joinColumns = @JoinColumn(name = "id_equipe"),

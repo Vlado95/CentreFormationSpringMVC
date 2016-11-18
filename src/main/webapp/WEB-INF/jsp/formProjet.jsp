@@ -7,28 +7,40 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%-- <p:header title="${titre}"/> --%>
-<h1>${titre}</h1>
-<form:form method="post" modelAttribute="projet">
-    <c:if test="${action != 'Modifier'}">
-        Createur: <form:input  path="createur.idPersonne"/>
-        <form:errors path="createur.idPersonne" cssClass="erreur"/>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">${titre}</h4>
+</div>
+
+    <form:form method="post" modelAttribute="projet">
+        <div class="modal-body"> 
+        <c:if test="${action != 'Modifier'}">
+            Createur: <form:input  path="createur.idPersonne"/>
+            <form:errors path="createur.idPersonne" cssClass="erreur"/>
+            <br/>
+            Promotion : <form:select path="promotion.id">  
+                <c:forEach items="${promotions}" var="promotion">
+                    <form:option value="${promotion.getId()}">${promotion.getName()}</form:option>  
+                </c:forEach>
+            </form:select>  
+            <br/>
+
+        </c:if>
+        Sujet : <form:input path="sujet"/>
+        <form:errors path="sujet" cssClass="erreur"/>
         <br/>
-        Promotion : <form:select path="promotion.id">  
-            <c:forEach items="${promotions}" var="promotion">
-                <form:option value="${promotion.getId()}">${promotion.getName()}</form:option>  
-            </c:forEach>
-        </form:select>  
+        Titre : <form:input path="titre"/>
+        <form:errors path="titre" cssClass="erreur"/>
         <br/>
-    </c:if>
-    Sujet : <form:input path="sujet"/>
-    <form:errors path="sujet" cssClass="erreur"/>
-    <br/>
-    Titre : <form:input path="titre"/>
-    <form:errors path="titre" cssClass="erreur"/>
-    <br/>
-    Date limite : <form:input path="dateLimite" placeholder="YYYY-MM-DD"/>
-    <form:errors path="dateLimite" cssClass="erreur"/>
-    <br/> 
-    <button type="submit">${action}</button>
-    <div>${message}</div>
-</form:form>
+        Date limite : <form:input path="dateLimite" placeholder="YYYY-MM-DD"/>
+        <form:errors path="dateLimite" cssClass="erreur"/>
+        <br/> 
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-default">${action}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </div>
+</div> 
+        <div>${message}</div>
+    </form:form>
+</div> 
