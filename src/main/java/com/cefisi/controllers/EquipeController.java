@@ -44,10 +44,10 @@ public class EquipeController {
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-        List<Personne> membreB = entityManager.createQuery("select P from Personne P where P.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB where E.id = ?1)")
-                .setParameter(1, idEquipe)
+        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
+                .setParameter(1, equipe.getProjet().getPromotion().getId())
+                .setParameter(2, equipe.getProjet().getId())
                 .getResultList();
-
         System.out.println("nb equipes : " + membreB.size());
         map.put("equipe", equipe);
         map.put("membreB", membreB);
@@ -100,6 +100,44 @@ public class EquipeController {
     }
     
     
+    
+      /*--modifier equipe--*/
+    @RequestMapping(value = "/equipe-{idEquipe}-modifier", method = RequestMethod.GET)
+    public String askModify(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) {
+        Equipe equipe = entityManager.find(Equipe.class, idEquipe);
+        map.put("equipe", equipe);
+        map.put("action", "Modifier");
+        map.put("titre", "Modifier Equipe n°" +equipe.getId());
+        return "formEquipe";
+    }
+
+    @Transactional
+    @RequestMapping(value = "/equipe-{idEquipe}-modifier", method = RequestMethod.POST)
+    public String doModify(@Valid  @ModelAttribute("equipe") Equipe equipe,
+            BindingResult result, ModelMap map , @PathVariable(value = "idEquipe") long idEquipe,
+            @RequestParam("resume") String resume
+          //  HttpSession session
+    ) throws SQLException {
+       // Personne createur2 =  (Personne) session.getAttribute("user");
+        //equipe.setId(idEquipe);
+        map.put("action", "Modifier");
+        map.put("titre", "Modifier equipe");
+
+        if (result.hasErrors()) {
+            System.out.println("erreurs");
+        } else {
+            String sql = "UPDATE equipe SET resume=:resume WHERE id_equipe=:id_equipe";
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter("resume",resume)
+                    .setParameter("id_equipe", idEquipe);
+            query.executeUpdate();
+            System.out.println("ok");
+            map.put("message", "Equipe a été modifiée");
+        }
+        return "redirect:/equipe-"+idEquipe; ///projet-"+equipe.getProjet().getId();
+    }
+    
+    
     /*-- ajouter des personnes dans l'equipes-- */
 
     /**
@@ -124,21 +162,11 @@ public class EquipeController {
         map.put("titre", "Ajouter un nouveau membre");
         return "formEquipe";
     }
-    
-  /*  @RequestMapping(value = "/projet-{idProjet}-modifier",
-            method = RequestMethod.GET)
-    public String askModify(ModelMap map,
-            @PathVariable(value = "idProjet") long idProjet) throws SQLException {
-        Projet projet = entityManager.find(Projet.class, idProjet); 
-        map.put("projet", projet);
-        map.put("action", "Modifier");
-        map.put("titre", "Modifier le projet n° " + projet.getId());
-        return "formProjet";
-    }*/
+  
     
     @Transactional
     @RequestMapping(value = "/equipe-{idEquipe}-new-membre", method = RequestMethod.POST)
-    public String doNewMembre(@Valid @ModelAttribute("equipe") Equipe equipe,
+    public String doNewMembre(@Valid @ModelAttribute("equipe") Equipe equipe,  HttpSession session,//HttpServletRequest request,
             BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @RequestParam("createur.idPersonne") long idPersonne
     ) throws SQLException {
         Personne membre = entityManager.find(Personne.class, idPersonne);
@@ -168,5 +196,55 @@ public class EquipeController {
         }
         return "redirect:/projet-"+equipeOld.getProjet().getId();
     }
+    
+    @RequestMapping(value = "/equipe-{idEquipe}/{idPersonne}-sup-membre", method = RequestMethod.GET)
+    public String askSupMembre(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @PathVariable(value = "idPersonne") long idPersonne) {
+      Equipe equipe = entityManager.find(Equipe.class, idEquipe); 
+      Projet projet = equipe.getProjet();
+        Personne membre = entityManager.find(Personne.class, idPersonne);
+       System.out.println("membres: " + membre);
+        map.put("equipe", equipe);
+        map.put("membre", membre);
+        map.put("action", "Suprimer");
+        map.put("titre", "Suprime un  membre");
+        return "formEquipe";
+    }
+
+    
+    @Transactional
+    @RequestMapping(value = "/equipe-{idEquipe}/{idPersonne}-sup-membre", method = RequestMethod.POST)
+    public String doSupMembre(@Valid @ModelAttribute("equipe") Equipe equipe,
+            BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @PathVariable(value = "idPersonne") long idPersonne/*, @RequestParam("createur.idPersonne") long idPersonne*/
+    ) throws SQLException {
+        Personne membre = entityManager.find(Personne.class, idPersonne);
+        equipe = entityManager.find(Equipe.class, idEquipe);
+        map.put("action", "Suprimer");
+        map.put("titre", "Suprimer un membre");
+
+        if (result.hasErrors()) {
+            System.out.println("erreurs");
+        } else {
+//            Set<Personne> membres = new HashSet<>(0);
+//            membres.addAll(equipeOld.getMembres());
+//            membres.add(membre);
+//            equipe.setCreateur(equipeOld.getCreateur());
+//            equipe.setId(idEquipe);
+//            equipe.setMembres(membres);
+//            equipe.setProjet(equipeOld.getProjet());
+//            equipe.setDateCreation(equipeOld.getDateCreation());
+//            equipe.setResume(equipeOld.getResume());
+//            entityManager.merge(equipe);
+//            entityManager.flush();
+            String sql = "Delete FROM membre_equipe WHERE id_equipe=:id_equipe AND id_personne=:id_personne";
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter("id_personne", membre.getIdPersonne())
+                 .setParameter("id_equipe", idEquipe);
+            query.executeUpdate();
+            System.out.println("ok");
+            map.put("message", "la personne a été bien suprimée");
+        }
+        return "redirect:/projet-"+equipe.getProjet().getId();
+    }
+
 
 }

@@ -5,27 +5,27 @@
 
 <div class="col-sm-8">
     <div class="well">
-       
+
         <p:header title="Projet"/>
         <h1>Titre : ${projet.titre}</h1>
-         <dl class="dl-horizontal span4 offset4 centered col-md-offset-3">
+        <dl class="dl-horizontal span4 offset4 centered col-md-offset-3">
             <dt class="col-sm-pull-10">Promotion :</dt><dd class="text-left"> ${projet.promotion.name}</dd>
             <dt class="text-right">Nb projets de la promotion :</dt><dd class="text-left">${projet.promotion.projects.size()}</dd>
             <dt>Nb etudiants de la promotion :</dt><dd class="text-left">${projet.promotion.etudiants.size()}</dd>
-            <dt class="text-right">Crée par : </dt><dd class="text-left">${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}</dd>
-             <dt class="text-right">Sujet :</dt><dd class="text-left">${projet.getSujet()}</dd>
+            <dt class="text-right">Cr?e par : </dt><dd class="text-left">${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}</dd>
+            <dt class="text-right">Sujet :</dt><dd class="text-left">${projet.getSujet()}</dd>
             <dt>Fin le :</dt><dd class="text-left">${projet.getDateLimite()}</dd>   
-         </dl>
-        
-         <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-modifier">Modifier le projet</a>
+        </dl>
+
+        <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-modifier">Modifier le projet</a>
     </div>
 
 </div>
- 
+
 <div class="col-sm-8 ">
- <div class="text-right"><a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-new-equipe">Ajouter une nouvelle equipe</a>
- </div>
-     <table class="table table-bordered table-curved well">
+    <div class="text-right"><a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${idProjet}-new-equipe">Ajouter une nouvelle equipe</a>
+    </div>
+    <table class="table table-bordered table-curved well">
         <thead>
             <tr class="label-default" style="color: white;">
                 <th>Equipes</th>
@@ -42,17 +42,19 @@
                 <ol>
                     <c:forEach items="${equipes}" var="equipe">
                         <tr>    
-                            <td>  ${equipe.resume} <a href="#">Modifier l'equipe</a> </td>
+                            <td> <a href="equipe-${equipe.id}">${equipe.resume}</a> 
+                     <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}-modifier">Modifier L'equipe</a>
+                            </td>
                             <td>
 
                                 <c:if test="${message ==null}">
                                     <c:if test="${equipe.membres.size() != 0}">
-                                        <ol>
-                                            <c:forEach items="${equipe.membres}" var="membre">
 
-                                                <li>${membre.nom}</li>
-                                                </c:forEach>
-                                        </ol>
+                                        <dl class="dl-horizontal">
+                                            <c:forEach items="${equipe.membres}" var="membre">
+                                                <dt>${membre.nom}</dt> <dd> <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}/${membre.idPersonne}-sup-membre"> <span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a></dd>
+                                            </c:forEach>
+                                        </dl>
                                     </c:if>
                                     <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}-new-membre">Ajouter un membre</a>
 

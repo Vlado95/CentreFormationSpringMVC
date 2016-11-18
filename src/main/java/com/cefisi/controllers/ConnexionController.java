@@ -23,27 +23,23 @@ public class ConnexionController {
 
     @PersistenceContext
     private EntityManager entityManager;
-    
-    
-        @RequestMapping(value = "/connexion", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/connexion", method = RequestMethod.GET)
     public String askConnexionForm(ModelMap map) {
 
         return "formConnexion";
     }
-    
-    
-    
 
     @RequestMapping(value = "/connexion", method = RequestMethod.POST)
     public String connecter(HttpSession session,
             @RequestParam(value = "login", required = true) String login,
             @RequestParam(value = "password", required = true) String password,
             ModelMap map) throws SQLException {
-         Personne user = new Personne();      
+        Personne user = new Personne();
         Query query = entityManager.createQuery("select P from Personne P where P.email = ?1 and  P.password = ?2");
-                query.setParameter(1, login);
-                query.setParameter(2, password);
-         user = (Personne) query.getSingleResult();
+        query.setParameter(1, login);
+        query.setParameter(2, password);
+        user = (Personne) query.getSingleResult();
 
         //  Personne user = Personne.getByLoginPassword(login, password);
         if (user == null) {
