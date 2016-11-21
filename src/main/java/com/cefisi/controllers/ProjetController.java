@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,10 +89,13 @@ public class ProjetController {
     @Transactional
     @RequestMapping(value = "/new-projet", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("projet") Projet projet,
-            BindingResult result, ModelMap map, @RequestParam("promotion.id") long id, @RequestParam("createur.idPersonne") long idPersonne
+            BindingResult result, ModelMap map, HttpSession session,
+            @RequestParam("promotion.id") long id //, @RequestParam("createur.idPersonne") long idPersonne
     ) throws SQLException {
         Promotion promotion = entityManager.find(Promotion.class, id);
-        Personne createur = entityManager.find(Personne.class, idPersonne);
+        //Personne createur = entityManager.find(Personne.class, idPersonne);
+        
+         Personne createur =  (Personne) session.getAttribute("user");
         projet.setCreateur(createur);
         projet.setPromotion(promotion);
         projet.setDateCreation(new Date(Calendar.getInstance().getTimeInMillis()));

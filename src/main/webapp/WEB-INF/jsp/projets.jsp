@@ -5,7 +5,10 @@
 <h1>Liste de projets</h1>
 <div class="col-sm-8 ">
     <div class="text-right">
-        <a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="new-projet"><span class="glyphicon glyphicon-plus"></span> Creér un nouveau projet</a>
+        <c:if test="${sessionScope['user'].profil == true }">
+
+            <a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="new-projet"><span class="glyphicon glyphicon-plus"></span> Creér un nouveau projet</a>
+        </c:if>
     </div>
     <table class="table table-bordered table-curved well">
         <thead>
@@ -25,11 +28,11 @@
                                 <a href="projet-${projet.getId()}">${projet.getTitre()}</a>
                             </td>
                             <td>   
-
-                                <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${projet.getId()}-modifier">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </a>
-                                <a href="#"> <span class="glyphicon glyphicon-remove"></span></a>
+                                <c:if test="${sessionScope['user'].profil == true && sessionScope['user'].idPersonne == projet.createur.idPersonne}">
+                                    <a href="#" data-toggle="modal" data-target="#dialog" data-url="projet-${projet.getId()}-modifier">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                </c:if>
                             </td>
 
                         </tr>

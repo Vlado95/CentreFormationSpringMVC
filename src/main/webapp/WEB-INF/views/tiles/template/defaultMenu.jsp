@@ -4,60 +4,37 @@
     Author     : Vladimir
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!-- <div style="padding: 5px;">
-<nav>
-    
-    <ul id="menu">
-        <li><a href="{pageContext.request.contextPath}/">Home</a></li>
-      <li><a href="{pageContext.request.contextPath}/products">Products</a></li>
-       <li><a href="{pageContext.request.contextPath}/contactus">Contact Us</a></li>
-    </ul>
-</nav>
-</div>    -->
-<!--   
- <div >
-    <div class="col-sm-20 col-md-2 affix-sidebar">
-		<div 
-  <div class="navbar navbar-default">
-    <div >
-      <ul >
-          <li><a href="${pageContext.request.contextPath}/"><span class="glyphicon "></span> Home mmmm </a></li>
-        <li><a href="${pageContext.request.contextPath}/products"><span class="glyphicon "></span> Product</a></li>
-        <li><a href="${pageContext.request.contextPath}/contactus"><span class="glyphicon "></span> Contact us</a></li>
-      </ul>
-      </div>/.nav-collapse 
-    </div>
-  </div>
-	</div>-->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<div class="col-sm-2 sidenav well">
+    <div class="well">
 
 
-    <!--<div class="col-sm-3 well">-->
-        <div class="col-sm-2 sidenav well">
-      <div class="well">
-          
-
-        <p><a href="#">My Profile</a></p>
+        <p><a href="personne-${sessionScope['user'].idPersonne}">My Profile</a></p>
         <img src="${pageContext.request.contextPath}/resources/images/ninja.png" class="img-circle" height="65" width="65" alt="Avatar">
-      </div>
-      <div class="well">
-          
-          
-          <c:if test="${sessionScope['user'] != null}">
-              <p>       ${sessionScope['user'].nom} ${sessionScope['user'].prenom} </p>
-              
-              <c:if test="${sessionScope['user'].profil  == true} ">
-                   <p>   Professeur    </p>
-              </c:if>
-                                
-              <c:if test="${sessionScope['user'].profil == false }">
-                 <p>   Etudiant    </p>
-              </c:if>
-              <%--<c:forEach  items="${sessionScope['user'].getPromotions()}" var="promotion">--%>
-                  <!--<p> promotion.getId()</p>-->
-<!--             <p> $ {sessionScope['user'].getPromotions().getId()}</p>-->
-              <%--</c:forEach>--%>
+    </div>
+    <div class="well">
+
+
+        <c:if test="${sessionScope['user'] != null}">
+            <p>       ${sessionScope['user'].nom} ${sessionScope['user'].prenom} </p>
+
+
+            <c:if test="${sessionScope['user'].profil == false }">
+                <p>   Etudiant    </p>
+            </c:if>
+            <c:if test="${sessionScope['user'].profil == true }">
+                <p>   Professeur    </p>
+            </c:if>
+            <jsp:useBean id="today" class="java.util.Date"/>   
+            <c:if test="${sessionScope['user'].promotions.size() != 0}">
+                <c:forEach items="${sessionScope['user'].promotions}" var="promotion">
+                    <c:if test="${promotion.finDate.time gt today.time && promotion.debutDate.time lt today.time}">
+                        <p>${promotion.name} </p>
+                    </c:if>
+                </c:forEach>
+            </c:if>
         </c:if>
 
-      </div>
-      
     </div>
+
+</div>

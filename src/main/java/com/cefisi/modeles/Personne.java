@@ -9,64 +9,61 @@ package com.cefisi.modeles;
  *
  * @author Vladimir
  */
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Entity
 public class Personne {
+
+//    @PersistenceContext
+//    private EntityManager entityManager;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_personne")
     private Long idPersonne;
 
-    
-    @ManyToMany(mappedBy = "etudiants")
+    @ManyToMany(mappedBy = "etudiants", fetch = FetchType.EAGER)
     private Set<Promotion> promotions = new HashSet<>();
-  //  private List<Promotion> promotions = new ArrayList<>();
+    //  private List<Promotion> promotions = new ArrayList<>();
 
-    
-    
-    
     @ManyToMany(mappedBy = "membres")
     private List<Equipe> equipes = new ArrayList<>();
 
     @Column(name = "nom")
     private String nom;
 
-    
     @Column(name = "prenom")
     private String prenom;
 
     @Column(name = "email")
     private String email;
-    
+
     @Column(name = "pwd")
     private String password;
 
     @Column(name = "profil")
     private Boolean profil;
 
-    
+    public Personne() {
 
-    public  Personne(){
-        
     }
 
- 
-
-   public Long getIdPersonne() {
+    public Long getIdPersonne() {
         return idPersonne;
     }
-/*
+
+    /*
     public void setId(Long id) {
         this.id = id;
     }*/
 
-    
     public String getNom() {
         return nom;
     }
@@ -98,7 +95,7 @@ public class Personne {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public Set<Promotion> getPromotions() {
         return promotions;
     }
@@ -106,8 +103,7 @@ public class Personne {
     public void setPromotions(Set<Promotion> promotions) {
         this.promotions = promotions;
     }
-    
-    
+
 //    public List<Promotion> getPromotions() {
 //        return promotions;
 //    }
@@ -115,7 +111,6 @@ public class Personne {
 //    public void setPromotions(List<Promotion> promotions) {
 //        this.promotions = promotions;
 //    }
-    
     public List<Equipe> getEquipes() {
         return equipes;
     }
@@ -123,7 +118,7 @@ public class Personne {
     public void setEquipes(List<Equipe> equipes) {
         this.equipes = equipes;
     }
-    
+
     public Boolean getProfil() {
         return profil;
     }
@@ -131,7 +126,16 @@ public class Personne {
     public void setProfil(Boolean profil) {
         this.profil = profil;
     }
-    
+
+//    @ModelAttribute("promotion")
+//    public Promotion getProm(Date dateActu, long idPersonne)throws SQLException {
+//        Promotion result = null;
+//        String sql = "SELECT P FROM promotion P WHERE dateActu=:dateactu BETWEEN debut_date=:debut_date AND fin_date=:fin_date AND P.id_promotion = (i_";
+//        Query query = entityManager.createQuery(sql);
+//        query.setParameter("debut_date", debutActu)
+//                .setParameter("id_personne", idPersonne);
+//        query.getSingleResult();
+//        return result;
+//    }
 
 }
-

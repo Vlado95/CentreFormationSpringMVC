@@ -10,6 +10,7 @@ package com.cefisi.modeles;
  * @author Vladimir
  */
 import java.util.ArrayList;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,12 @@ public class Promotion {
             inverseJoinColumns = @JoinColumn(name = "id_personne")
     )
     private Set<Personne> etudiants = new HashSet<>();
+    
+    @Column(name = "debut_date")
+    private Date debutDate;
+    
+    @Column(name = "fin_date")
+    private Date finDate;
 
     public Promotion() {
     }
@@ -72,5 +79,21 @@ public class Promotion {
 
     public void setEtudiants(Set<Personne> etudiants) {
         this.etudiants = etudiants;
+    }
+    
+        public Date getDebutDate() {
+        return debutDate;
+    }
+
+    public void setDebutDate(Date debutDate) {
+        this.debutDate = debutDate;
+    }
+
+    public Date getFinDate() {
+        return finDate;
+    }
+
+    public void setFinDate(Date finDate) {
+        this.finDate = finDate;
     }
 }

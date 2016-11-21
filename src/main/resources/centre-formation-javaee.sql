@@ -12,6 +12,8 @@ USE centre_formation §
 CREATE TABLE IF NOT EXISTS promotion (
   id_promotion BIGINT(20) NOT NULL AUTO_INCREMENT,
   nom VARCHAR(45) NOT NULL,
+  debut_date DATETIME NOT NULL,
+  fin_date  DATETIME NOT NULL,
   PRIMARY KEY (id_promotion),
   UNIQUE INDEX nom_UNIQUE (nom ASC))
 ENGINE = InnoDB§
@@ -140,9 +142,9 @@ BEGIN
 		(9,'Eddy', 'Kenzo', 'edke@yahoo.fr','sodoma',true),
 		(10,'Feyte', 'Floria', 'f.feyte@gamil.com','sisoko', true);
 
-	INSERT INTO promotion (id_promotion, nom) VALUES
-		(1, 'Decisionel et developpement JEE'),
-		(2, 'MOA');
+	INSERT INTO promotion (id_promotion, nom, debut_date, fin_date) VALUES
+		(1, 'Decisionel et developpement JEE','2015-3-07 22:00:00','2016-11-25 22:00:00' ),
+		(2, 'MOA','2016-6-01 22:00:00','2017-6-11 22:00:00');
 
 	INSERT INTO membre_promotion (id_promotion, id_personne) VALUES
 		(1, 1),
