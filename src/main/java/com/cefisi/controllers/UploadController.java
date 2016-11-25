@@ -43,7 +43,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * Handles requests for the file upload page.
  */
 @Controller
-public class HomeController {
+public class UploadController {
     
     
     @PersistenceContext
@@ -65,7 +65,7 @@ public class HomeController {
     ) throws SQLException {
         Personne auteur =  (Personne) session.getAttribute("user"); 
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-            map.put("action", "upload");
+            map.put("action", "upload-"+idEquipe);
             map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
         if (fileUpload != null && fileUpload.length > 0) {
             for (CommonsMultipartFile aFile : fileUpload){

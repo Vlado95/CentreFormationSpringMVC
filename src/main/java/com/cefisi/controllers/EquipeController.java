@@ -45,6 +45,9 @@ public class EquipeController {
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
+        String sqlString="select P from Personne P where P.idPersonne in "+"(select F.idAuteur from UploadFile F) ";
+        List<Personne> auteurs  = entityManager.createQuery(sqlString).getResultList();
+        List<Personne> auteurAjour  = entityManager.createQuery("select P from Personne P where P.idPersonne in "+"(select F.idPersoAjour from UploadFile F) ").getResultList();
         List<UploadFile> files = entityManager.createQuery("select F from UploadFile F where F.idEquipe =?1")
                 .setParameter(1, idEquipe)
                 .getResultList();
@@ -53,6 +56,8 @@ public class EquipeController {
                 .setParameter(2, equipe.getProjet().getId())
                 .getResultList();
         System.out.println("nb equipes : " + membreB.size());
+        map.put("auteurs", auteurs);
+        map.put("auteurAjour", auteurAjour);
         map.put("files", files);
         map.put("equipe", equipe);
         map.put("membreB", membreB);
