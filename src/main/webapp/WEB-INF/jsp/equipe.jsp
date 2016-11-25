@@ -137,6 +137,9 @@
                                         <td>
                                             <a href="download-document-${file.id}"><span class="glyphicon glyphicon-download-alt"></span></a>
                                             <a href="delete-document-${file.id}"><span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a>
+                                            <a href="#" data-toggle="modal" data-target="#dialog" data-url="upload-${file.idEquipe}/${file.id}-modify">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
                                         </td>
 
                                     </tr>

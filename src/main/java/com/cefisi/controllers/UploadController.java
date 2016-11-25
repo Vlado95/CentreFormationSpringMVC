@@ -129,71 +129,76 @@ public class UploadController {
     
     
     
-//    
-//    @RequestMapping(value = "/upload-{idEquipe}-{id}-modify", method = RequestMethod.GET)
-//	public String askModifyFile(HttpServletRequest request,  ModelMap map ,@PathVariable(value = "idEquipe") long idEquipe , @PathVariable(value = "id") long id ) {
-//            UploadFile uploadFile = entityManager.find(UploadFile.class, id);
-//            map.put("equipe", uploadFile);
-//            map.put("action", "upload-"+idEquipe/id+"-modify");
-//            map.put("titre", "Modifier le doc "+uploadFile.getId());
-//		return "Upload";
-//	}
-//    @Transactional
-//    @RequestMapping(value = "/upload-{idEquipe}-{id}-modify", method = RequestMethod.POST)
-//    public String doModifyFile(@Valid @ModelAttribute("uploadFile") UploadFile uploadFile,HttpServletRequest request, ModelMap map, 
-//            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session, @PathVariable(value = "idEquipe") long idEquipe ,@PathVariable(value = "id") long id 
-//    ) throws SQLException {
-//        Personne auteur =  (Personne) session.getAttribute("user"); 
-//            map.put("action", "-"+"upload-"+idEquipe/id+"-modify");
-//            map.put("titre", "Modifier le doc"+uploadFile.getId());
-//        if (fileUpload != null && fileUpload.length > 0) {
-//            for (CommonsMultipartFile aFile : fileUpload){
-//                 
-//                System.out.println("update file: " + aFile.getOriginalFilename() +aFile.getContentType());
-//                
-//                String sql = "UPDATE files_upload SET id_persoAjour=:idPersoMisAjr, file_name =:fileName, type=:type ,file_data=:fileData WHERE upload_id=:id";
-//            Query query = entityManager.createNativeQuery(sql);
-//            query.setParameter("idPersoMisAjr",auteur.getIdPersonne())
-//                    .setParameter("fileName",aFile.getOriginalFilename())
-//                    .setParameter("type",aFile.getContentType())
-//                    .setParameter("fileData",aFile.getBytes())
-//                    .setParameter("id", id);
-//                 query.executeUpdate();
-//               
-//
-//            }
-//        }
-// 
-//        return "redirect:/equipe-"+idEquipe;
-//    }	
-//    
-//    
     
-//	@Autowired
-//	private FileUploadDAO fileUploadDao;
-//
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public String showUploadForm(HttpServletRequest request) {
-//		return "Upload";
-//	}
-//	
-//    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
-//    public String handleFileUpload(HttpServletRequest request,
-//            @RequestParam CommonsMultipartFile[] fileUpload) throws Exception {
-//         
-//        if (fileUpload != null && fileUpload.length > 0) {
-//            for (CommonsMultipartFile aFile : fileUpload){
-//                 
-//                System.out.println("Saving file: " + aFile.getOriginalFilename());
-//                
-//                UploadFile uploadFile = new UploadFile();
-//                uploadFile.setFileName(aFile.getOriginalFilename());
-//                uploadFile.setData(aFile.getBytes());
-//                fileUploadDao.save(uploadFile);                
-//            }
-//        }
-// 
-//        return "Success";
-//    }	
+    @RequestMapping(value = "/upload-{idEquipe}/{id}-modify", method = RequestMethod.GET)
+	public String askModifyFile(HttpServletRequest request,  ModelMap map ,@PathVariable(value = "idEquipe") long idEquipe , @PathVariable(value = "id") long id ) {
+            UploadFile uploadFile = entityManager.find(UploadFile.class, id);
+            map.put("equipe", uploadFile);
+            map.put("action", "upload-"+idEquipe+"/"+id+"-modify");
+            map.put("titre", "Modifier le doc "+uploadFile.getId());
+		return "UploadMod";
+	}
+    @Transactional
+    @RequestMapping(value = "/upload-{idEquipe}/{id}-modify", method = RequestMethod.POST)
+    public String doModifyFile(@Valid /* @ModelAttribute("uploadFile") */UploadFile uploadFile,
+            ModelMap map, 
+            BindingResult result,
+            HttpServletRequest request, 
+
+            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session, @PathVariable(value = "idEquipe") long idEquipe ,@PathVariable(value = "id") long id 
+    ) throws SQLException {
+        Personne auteur =  (Personne) session.getAttribute("user"); 
+            map.put("action", "upload-"+idEquipe/id+"-modify");
+            map.put("titre", "Modifier le doc"+uploadFile.getId());
+        if (fileUpload != null && fileUpload.length > 0) {
+            for (CommonsMultipartFile aFile : fileUpload){
+                 
+                System.out.println("update file: " + aFile.getOriginalFilename() +aFile.getContentType());
+                
+                String sql = "UPDATE files_upload SET id_persoAjour=:idPersoMisAjr, file_name =:fileName, type=:type ,file_data=:fileData ,date_mise_jr=:dateMiseJr WHERE upload_id=:id";
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter("idPersoMisAjr",auteur.getIdPersonne())
+                    .setParameter("fileName",aFile.getOriginalFilename())
+                    .setParameter("type",aFile.getContentType())
+                    .setParameter("fileData",aFile.getBytes())
+                    .setParameter("dateMiseJr",new Date(Calendar.getInstance().getTimeInMillis()))
+                    .setParameter("id", id);
+                 query.executeUpdate();
+               
+
+            }
+        }
+ 
+        return "redirect:/equipe-"+idEquipe;
+    }	
+    
+    
+    
+////	@Autowired
+////	private FileUploadDAO fileUploadDao;
+////
+////	@RequestMapping(value = "/", method = RequestMethod.GET)
+////	public String showUploadForm(HttpServletRequest request) {
+////		return "Upload";
+////	}
+////	
+////    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+////    public String handleFileUpload(HttpServletRequest request,
+////            @RequestParam CommonsMultipartFile[] fileUpload) throws Exception {
+////         
+////        if (fileUpload != null && fileUpload.length > 0) {
+////            for (CommonsMultipartFile aFile : fileUpload){
+////                 
+////                System.out.println("Saving file: " + aFile.getOriginalFilename());
+////                
+////                UploadFile uploadFile = new UploadFile();
+////                uploadFile.setFileName(aFile.getOriginalFilename());
+////                uploadFile.setData(aFile.getBytes());
+////                fileUploadDao.save(uploadFile);                
+////            }
+////        }
+//// 
+////        return "Success";
+  //  }	
 }
 
