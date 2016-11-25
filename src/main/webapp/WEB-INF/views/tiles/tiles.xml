@@ -46,6 +46,16 @@
        <put-attribute name="body" value="/WEB-INF/jsp/personne.jsp" />  
    </definition> 
    
+<!--   <definition name="Upload" extends="base-definition">  
+       <put-attribute name="title" value="upload" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/Upload.jsp" />  
+   </definition> 
+   -->
+   <definition name="Success" extends="base-definition">  
+       <put-attribute name="title" value="Success" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/Success.jsp" />  
+   </definition> 
+   
    
 <!--   <definition name="persistenceSqlException" extends="base-definition">  
        <put-attribute name="title" value="persistenceSqlException" />  

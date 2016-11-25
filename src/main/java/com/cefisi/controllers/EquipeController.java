@@ -8,6 +8,7 @@ package com.cefisi.controllers;
 import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.Projet;
+import com.cefisi.modeles.UploadFile;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,11 +45,15 @@ public class EquipeController {
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
+        List<UploadFile> files = entityManager.createQuery("select F from UploadFile F where F.idEquipe =?1")
+                .setParameter(1, idEquipe)
+                .getResultList();
         List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
                 .setParameter(1, equipe.getProjet().getPromotion().getId())
                 .setParameter(2, equipe.getProjet().getId())
                 .getResultList();
         System.out.println("nb equipes : " + membreB.size());
+        map.put("files", files);
         map.put("equipe", equipe);
         map.put("membreB", membreB);
         return "equipe";

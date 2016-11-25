@@ -10,7 +10,15 @@
         <li><a href="equipe-7-new-membre">equipe-7-new-membre</a></li>
         <li><a href="personnes">Personnes</a></li
         <li><a href="personne-1">Personne-1</a></li>
-         <a href="equipe-1-sup-membre">equipe-1-new-membre</a>
+        <li><a href="upload-1">upload-1</a></li>
+        <li> <a href="equipe-1-sup-membre">equipe-1-new-membre</a></li>
+        <li> <a href="download-document-1">download-1</a></li>
+        <li> <a href="delete-document-2">delete</a></li>
+         <!--<li> <a href="upload-1/1-modify">mod</a></li>-->
+        
+        
+        
+        
         
     </ul>
 

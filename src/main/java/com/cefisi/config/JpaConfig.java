@@ -4,11 +4,8 @@ package com.cefisi.config;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.dialect.MySQL5Dialect;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -16,8 +13,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 import java.util.Properties;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 
 @Configuration
@@ -44,9 +41,11 @@ public class JpaConfig {
         em.setPackagesToScan("com.cefisi.modeles");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());
+       
 
         return em;
     }
+    
 
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
@@ -71,4 +70,7 @@ public class JpaConfig {
         hibernateProperties.setProperty("hibernate.c3p0.timeout", "300");
         return hibernateProperties;
     }
+    
+ 
+
 }

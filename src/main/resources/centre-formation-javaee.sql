@@ -9,6 +9,28 @@ DROP SCHEMA IF EXISTS centre_formation §
 CREATE SCHEMA IF NOT EXISTS centre_formation DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci §
 USE centre_formation §
 
+-- file upload
+CREATE TABLE files_upload (
+  upload_id BIGINT(11) NOT NULL AUTO_INCREMENT,
+  id_auteur BIGINT(20) NOT NULL,
+  id_persoAjour BIGINT(20) NULL,
+  id_equipe BIGINT(20) NOT NULL,
+  file_name varchar(128) DEFAULT NULL,
+  description varchar(255) NULL,
+  type VARCHAR(100) NOT NULL,
+  file_data longblob,
+  date_ajout DATETIME NOT NULL,
+  date_mise_jr DATETIME  NULL,
+  PRIMARY KEY (`upload_id`)
+CONSTRAINT fk_files_upload_equipe
+    FOREIGN KEY (id_equipe)
+    REFERENCES personne (id_equipe)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB§
+
+
+
 CREATE TABLE IF NOT EXISTS promotion (
   id_promotion BIGINT(20) NOT NULL AUTO_INCREMENT,
   nom VARCHAR(45) NOT NULL,
@@ -227,6 +249,67 @@ BEFORE INSERT ON projet
 FOR EACH ROW 
 BEGIN
  SET NEW.date_creation = now();
+END§
+
+
+
+DROP TRIGGER IF EXISTS trigger_insert_personne§
+CREATE TRIGGER trigger_insert_personne
+BEFORE INSERT ON personne
+FOR EACH ROW
+BEGIN
+-- prénom capitalisé en INSERT
+	SET NEW.prenom = upper(trim(NEW.prenom));
+
+-- nom en majuscule en INSERT
+  SET NEW.nom = trim(upper(NEW.nom));
+  
+  -- adresse email sans espace en INSERT
+   SET NEW.email = trim(NEW.email);
+END§
+
+
+
+DROP TRIGGER IF EXISTS trigger_insert_projet§
+CREATE TRIGGER trigger_insert_projet
+BEFORE INSERT ON projet
+FOR EACH ROW
+BEGIN
+-- projet sans date de début en UPDATE
+ SET NEW.date_creation = NOW();
+END§
+
+DELIMITER §
+DROP TRIGGER IF EXISTS trigger_membre_equipe_insert§
+CREATE TRIGGER trigger_membre_equipe_insert BEFORE INSERT ON membre_equipe
+FOR EACH ROW
+BEGIN
+	-- empecher d'inserer un membre deja present dans le projet
+    DECLARE v_id_projet INT;
+    DECLARE v_equipes VARCHAR(50);
+    DECLARE v_msg VARCHAR(255);
+    -- Le id du projet
+    SELECT id_projet INTO v_id_projet
+	FROM equipe
+	WHERE id_equipe = NEW.id_equipe;
+    -- Nb de membre de même id_personne dans ce projet
+    SELECT GROUP_CONCAT(id_equipe SEPARATOR ', ') INTO v_equipes
+    FROM membre_equipe
+    WHERE 
+		id_personne = NEW.id_personne
+		AND id_equipe IN
+        (
+			SELECT id_equipe
+            FROM equipe
+            WHERE id_projet = v_id_projet
+		)
+        AND id_equipe <> NEW.id_equipe;
+	IF v_equipes IS NOT NULL THEN
+		SET v_msg = concat('Personne ', NEW.id_personne, 
+        ' ajoutée à l''équipe ', NEW.id_equipe, ' déjà membre des équipes ', v_equipes, ' pour le projet ', v_id_projet);
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT=v_msg,  MYSQL_ERRNO=3000;
+	END IF;
 END§
 
 
