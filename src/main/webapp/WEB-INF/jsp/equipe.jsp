@@ -7,7 +7,7 @@
     Author     : Vladimir
 --%>
 <jsp:useBean id="today" class="java.util.Date"/> 
-<div class="col-sm-8">
+<div class="col-sm-8 col-dm-8 col-lg-8 ">
     <div class="well">
         <br/>Resume : ${equipe.resume}
         <br/>Projet : ${equipe.projet.titre} 
@@ -20,8 +20,8 @@
             </c:if>
         </c:if>
         <div class="row">
-            <div class="col-dm-8 col-md-offset-3">
-                <div class="col-md-4" >
+            <div class="col-dm-8 col-md-offset-3 col-sm-8 col-sm-offset-3 col-lg-8 col-lg-offset-3">
+                <div class="col-sm-4 col-md-4 col-lg-4" >
                     <c:if test="${message ==null}">
                         <c:if test="${equipe.membres.size() != 0}">
                             <h3>Membres : </h3>     <ol>
@@ -29,8 +29,9 @@
 
                                     <li><a href="personne-${membre.idPersonne}">${membre.nom}</a> 
                                         <c:if test="${sessionScope['user'].profil == false && sessionScope['user'].idPersonne == equipe.createur.idPersonne }">
-
-                                            <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}/${membre.idPersonne}-sup-membre"> <span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a>
+                                            <c:if test="${sessionScope['user'].idPersonne != membre.idPersonne }">
+                                                <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}/${membre.idPersonne}-sup-membre"> <span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a>
+                                                </c:if>
                                             </c:if>
                                     </li>
 
@@ -50,7 +51,7 @@
                             </c:if>
                         </c:if>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 col-sm-5 col-lg-5">
                     <h4>les personnes qui n'ont pas d'equipe : </h4>   <ol>
                         <c:forEach items="${membreB}" var="membre">
 
@@ -63,7 +64,7 @@
     </div>
 </div>
 
-<div class="col-sm-8 ">
+<div class="col-sm-9  col-md-9 col-lg-9">
     <c:if test="${equipe.membres.size() != 0 }">   
         <c:forEach items="${equipe.membres}" var="membre">
             <c:if test="${membre.idPersonne == sessionScope['user'].idPersonne}"> 
@@ -102,12 +103,8 @@
                                         <td> 
                                             ${file.fileName}
                                         </td>
-                                        <td>
-                                            <c:forEach items="${auteurs}" var="auteur">
-                                                <c:if test="${file.idAuteur == auteur.idPersonne}">    
-                                                    ${auteur.nom}
-                                                </c:if>
-                                            </c:forEach>
+                                        <td>   
+                                            ${file.auteur.nom}
                                         </td>
                                         <td> 
                                             ${file.description}
@@ -119,17 +116,8 @@
                                         <td> 
                                             ${file.dateAjout}
                                         </td>
-                                        <td>
-                                            <c:if test="${auteurAjour.size() != 0}">
-                                                <c:forEach items="${auteurAjour}" var="auteurAjour">
-                                                    <c:if test="${file.idAuteur == auteurAjour.idPersonne}">    
-                                                        ${auteurAjour.nom}
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test="${auteurAjour.size() == 0}">
-                                                pas de mise à jour 
-                                            </c:if>
+                                        <td>   
+                                            ${file.persoAjour.nom}
                                         </td>
                                         <td>
                                             ${file.dateMisaJr}
@@ -137,9 +125,9 @@
                                         <td>
                                             <a href="download-document-${file.id}"><span class="glyphicon glyphicon-download-alt"></span></a>
                                             <a href="delete-document-${file.id}"><span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a>
-                                            <a href="#" data-toggle="modal" data-target="#dialog" data-url="upload-${file.idEquipe}/${file.id}-modify">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
+                                            <a href="#" data-toggle="modal" data-target="#dialog" data-url="upload-${file.equipe.id}/${file.id}-modify">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
                                         </td>
 
                                     </tr>

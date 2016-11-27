@@ -1,5 +1,10 @@
-        <h1>${titre}</h1>
        
+<div class="text-center">
+    <h1><strong>BIENVENUE </strong></h1>
+
+</div>
+ <!--<h1>${titre}</h1>-->
+<!--       
     <ul>
         <li><a href="projet-1">projet-1</a></li>
         <li><a href="projet-1-new-equipe">projet-1-new-equipe</a></li>
@@ -20,7 +25,7 @@
         
         
         
-    </ul>
+    </ul>-->
 
 
 

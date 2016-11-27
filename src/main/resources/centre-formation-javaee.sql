@@ -3,8 +3,6 @@
 
 DELIMITER §
 
-
-
 DROP SCHEMA IF EXISTS centre_formation §
 CREATE SCHEMA IF NOT EXISTS centre_formation DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci §
 USE centre_formation §
@@ -21,10 +19,20 @@ CREATE TABLE files_upload (
   file_data longblob,
   date_ajout DATETIME NOT NULL,
   date_mise_jr DATETIME  NULL,
-  PRIMARY KEY (`upload_id`)
+  PRIMARY KEY (upload_id),
 CONSTRAINT fk_files_upload_equipe
     FOREIGN KEY (id_equipe)
-    REFERENCES personne (id_equipe)
+    REFERENCES equipe (id_equipe)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT fk_files_upload_personne2
+    FOREIGN KEY (id_auteur)
+    REFERENCES personne (id_personne)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT fk_files_upload_personne
+    FOREIGN KEY (id_persoAjour)
+    REFERENCES personne (id_personne)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB§
@@ -41,6 +49,20 @@ CREATE TABLE IF NOT EXISTS promotion (
 ENGINE = InnoDB§
 
 
+CREATE TABLE IF NOT EXISTS verification_token (
+  id_token BIGINT(20) NOT NULL AUTO_INCREMENT,
+  token VARCHAR(45) NOT NULL,
+  id_personne BIGINT(20) NOT NULL,
+  expiry_date DATETIME NOT NULL,
+  PRIMARY KEY (id_token),
+  CONSTRAINT fk_verification_token_personne
+    FOREIGN KEY (id_personne)
+    REFERENCES personne (id_personne)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB§
+
+
 CREATE TABLE IF NOT EXISTS personne (
   id_personne BIGINT(20) NOT NULL AUTO_INCREMENT,
   nom VARCHAR(45) NOT NULL,
@@ -48,9 +70,11 @@ CREATE TABLE IF NOT EXISTS personne (
   email VARCHAR(45) NOT NULL,
   pwd  VARCHAR(45) NOT NULL,
   profil  boolean not null default false,
+  enabled boolean NULL,
   PRIMARY KEY (id_personne),
   UNIQUE INDEX email_UNIQUE (email ASC))
 ENGINE = InnoDB§
+
 
 
 CREATE TABLE IF NOT EXISTS membre_promotion (
@@ -138,8 +162,10 @@ BEGIN
 	TRUNCATE membre_equipe;
 	TRUNCATE membre_promotion;
 	TRUNCATE personne;
-    TRUNCATE projet;
-    TRUNCATE promotion;
+        TRUNCATE projet;
+        TRUNCATE promotion;
+       TRUNCATE files_upload;
+TRUNCATE verification_token;
 	-- Remettre les contraintes d'integrite
 	SET FOREIGN_KEY_CHECKS=1;
 
@@ -161,7 +187,7 @@ BEGIN
 		(6,'Siby', 'Abdoulaye', 'absiby@yahoo.fr','soloma',false),
 		(7, 'Buittot', 'Eleanor', 'bui.elea@gamil.com','sisqo',false),
 		(8,'Mickael', 'Angelo', 'M.angelo@tortue.fr','sabin',false),
-		(9,'Eddy', 'Kenzo', 'edke@yahoo.fr','sodoma',true),
+		(9,'Plasse', 'Michel', 'edke@yahoo.fr','sodoma',true),
 		(10,'Feyte', 'Floria', 'f.feyte@gamil.com','sisoko', true);
 
 	INSERT INTO promotion (id_promotion, nom, debut_date, fin_date) VALUES
@@ -180,15 +206,15 @@ BEGIN
 		(2, 8);
 		
 	INSERT INTO projet (id_projet,id_promotion, id_createur,sujet,titre,date_creation, date_limite ) VALUES
-		(1, 1,9,'gestion de terrain','flow managment project','2016-4-12 22:00:00','2016-7-12 22:00:00'),
+		(1, 1,9,'Gérer les terrains','flow managment project','2016-4-12 22:00:00','2016-7-12 22:00:00'),
 		(2, 1,10,'interface contenteiux','scores-decision project','2016-5-15 22:00:00','2016-8-14 22:00:00'),
 		(3, 1,9,'gerer les annonces legales','socores-decisions project','2016-6-13 22:00:00','2016-9-11 22:00:00');
 
-	INSERT INTO equipe (id_equipe, id_projet,id_createur,date_creation) VALUES
-		(1, 1,2,'2016-4-20 22:00:00'),
-        (2, 1,3,'2016-4-23 22:00:00'),
-        (3, 2,1,'2016-5-21 22:00:00'),
-        (4, 1,4,'2016-5-1 22:00:00');
+	INSERT INTO equipe (id_equipe, id_projet,id_createur,date_creation, resume) VALUES
+		(1, 1,2,'2016-4-20 22:00:00','Equipe n° 1'),
+        (2, 1,3,'2016-4-23 22:00:00','Equipe n° 2'),
+        (3, 2,1,'2016-5-21 22:00:00','Equipe n° 3'),
+        (4, 1,4,'2016-5-1 22:00:00','Equipe n° 4');
         
 	INSERT INTO membre_equipe (id_equipe,id_personne) VALUES
 		(1, 2),

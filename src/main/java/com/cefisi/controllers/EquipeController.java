@@ -45,10 +45,7 @@ public class EquipeController {
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-        String sqlString="select P from Personne P where P.idPersonne in "+"(select F.idAuteur from UploadFile F) ";
-        List<Personne> auteurs  = entityManager.createQuery(sqlString).getResultList();
-        List<Personne> auteurAjour  = entityManager.createQuery("select P from Personne P where P.idPersonne in "+"(select F.idPersoAjour from UploadFile F) ").getResultList();
-        List<UploadFile> files = entityManager.createQuery("select F from UploadFile F where F.idEquipe =?1")
+        List<UploadFile> files = entityManager.createQuery("select F from UploadFile F JOIN F.equipe FE where FE.id =?1")
                 .setParameter(1, idEquipe)
                 .getResultList();
         List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
@@ -56,8 +53,6 @@ public class EquipeController {
                 .setParameter(2, equipe.getProjet().getId())
                 .getResultList();
         System.out.println("nb equipes : " + membreB.size());
-        map.put("auteurs", auteurs);
-        map.put("auteurAjour", auteurAjour);
         map.put("files", files);
         map.put("equipe", equipe);
         map.put("membreB", membreB);
@@ -79,14 +74,9 @@ public class EquipeController {
     @RequestMapping(value = "/projet-{idProjet}-new-equipe", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("equipe") Equipe equipe,
             BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet, 
-           // @RequestParam("createur.idPersonne") long idPersonne,
             HttpSession session
     ) throws SQLException {
-     /*   Personne createur3 = entityManager.find(Personne.class, idPersonne);
-         
-        Personne createur2 = new Personne();*/
         Personne createur2 =  (Personne) session.getAttribute("user");
-        // Personne createur = entityManager.find(Personne.class, createur2.getIdPersonne());
         Projet projet = entityManager.find(Projet.class, idProjet);
         equipe.setCreateur(createur2);
         map.put("action", "Créer");
@@ -176,7 +166,7 @@ public class EquipeController {
     
     @Transactional
     @RequestMapping(value = "/equipe-{idEquipe}-new-membre", method = RequestMethod.POST)
-    public String doNewMembre(@Valid @ModelAttribute("equipe") Equipe equipe,  HttpSession session,//HttpServletRequest request,
+    public String doNewMembre(@Valid @ModelAttribute("equipe") Equipe equipe,  HttpSession session,
             BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @RequestParam("createur.idPersonne") long idPersonne
     ) throws SQLException {
         Personne membre = entityManager.find(Personne.class, idPersonne);
@@ -224,7 +214,7 @@ public class EquipeController {
     @Transactional
     @RequestMapping(value = "/equipe-{idEquipe}/{idPersonne}-sup-membre", method = RequestMethod.POST)
     public String doSupMembre(@Valid @ModelAttribute("equipe") Equipe equipe,
-            BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @PathVariable(value = "idPersonne") long idPersonne/*, @RequestParam("createur.idPersonne") long idPersonne*/
+            BindingResult result, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe, @PathVariable(value = "idPersonne") long idPersonne
     ) throws SQLException {
         Personne membre = entityManager.find(Personne.class, idPersonne);
         equipe = entityManager.find(Equipe.class, idEquipe);

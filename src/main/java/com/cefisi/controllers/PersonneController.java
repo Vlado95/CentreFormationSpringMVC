@@ -37,11 +37,7 @@ public class PersonneController{
      public String doGet(ModelMap map, HttpSession session 
     ) throws SQLException {
         System.out.println("/projet");
-        //session.getAttribute("user");
         System.out.println("test" );
-       // Personne user = (Personne) session.getAttribute("user");//request.getSession().getAttribute("user");
-         //System.out.println("user: " + request.getSession().getAttribute("user"));
-       //  System.out.println("userTest: " + user.getEmail());
         List<Personne> personnes = entityManager.createQuery("select p from Personne p").getResultList();
         map.put("personnes", personnes);
         return "personnes";
@@ -54,44 +50,8 @@ public class PersonneController{
     public String personne(ModelMap map, @PathVariable(value = "idPersonne") long idPersonne) throws SQLException {
         Personne personne = entityManager.find(Personne.class, idPersonne);
         Date today = new Date(Calendar.getInstance().getTimeInMillis());
-//        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
-//                .setParameter(1, projet.getPromotion().getId())
-//                .setParameter(2, idProjet)
-//                .getResultList();
-//        List<Equipe> equipes = projet.getEquipes();
-//        LinkedHashSet<Equipe> equipesCl = new LinkedHashSet<Equipe>();
-//        equipesCl.addAll(equipes);
-//        equipes.clear();
-//        equipes.addAll(equipesCl);
-
-        //    System.out.println("nb students without groupe : " + membreB.size());
         map.put("personne", personne);
-        //map.put("nb", nb);
-        
         return "personne";
     }
 
-  
-    /**
-	 *  le valeur d'une personne <code>promo</code> dans la JSP
-	 *
-	 * @return
-	 */
-//	@ModelAttribute("promo")
-//	public Promotion getPromotion() throws SQLException {
-//            String sql = "SELECT P FROM promotion P  WHERE P.id =:id_promotion";
-//                
-//		 Promotion promo = (Promotion) entityManager.createQuery(sql).setParameter("id_promotion", 1).getSingleResult();
-//                        //(Promotion) entityManager.createNativeQuery()
-//                      //  + "  ?2 BETWEEN P.debutDate AND P.finDate AND MP.idPersonne = ?3")
-//                        //.setParameter(1,new Date(Calendar.getInstance().getTimeInMillis()))
-//                      //  .setParameter(2,new Date(Calendar.getInstance().getTimeInMillis()))
-//                      //  .setParameter(1, 3)
-//                      //  .getSingleResult();
-//                      return promo;
-//        }
-
-  
 }
-// List<Promotion> promotions = entityManager.createQuery("select p from Promotion p order by p.id").getResultList();
-//        return promotions;

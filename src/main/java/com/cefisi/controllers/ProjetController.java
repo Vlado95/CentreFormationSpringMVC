@@ -47,12 +47,7 @@ public class ProjetController {
     @Transactional
     @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idProjet") long idProjet) throws SQLException {
-        Projet projet = entityManager.find(Projet.class, idProjet);
-        /*  List<Equipe> equipes =entityManager.createQuery("select E from Equipe E join E.projet EP where EP.id = ?1 order by E.id")
-                .setParameter(1, idProjet)
-               .getResultList();*/
-
-        List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
+        Projet projet = entityManager.find(Projet.class, idProjet);  List<Personne> membreB = entityManager.createQuery("select MP from Promotion P join P.etudiants MP where P.id = ?1 and MP.idPersonne not in " + "(select MB.idPersonne from Equipe E join E.membres MB join E.projet EP where EP.id = ?2)")
                 .setParameter(1, projet.getPromotion().getId())
                 .setParameter(2, idProjet)
                 .getResultList();
@@ -143,22 +138,7 @@ public class ProjetController {
         if (result.hasErrors()) {
             System.out.println("erreurs");
         } else {
-            // Le idProjet est dans l'url, pas dans le formulaire
-
-//            Projet projetOld = entityManager.find(Projet.class, idProjet);
-//            projet.setCreateur(projetOld.getCreateur());
-//            projet.setPromotion(projetOld.getPromotion());
-//
-//            System.out.println("date DE cration " + projetOld.getDateCreation());
-//            projet.setDateCreation(projetOld.getDateCreation());
-//            map.put("projet", projet);
-//            map.put("action", "Modifier");
-//            map.put("titre", "Modifier le produit n° " + projet.getId());
-//            entityManager.merge(projet);
-//            entityManager.flush();
-//            System.out.println("ok");
-//            map.put("message", "Projet modifié");
-            String sql = "UPDATE projet SET titre=:titre, sujet=:sujet, date_limite=:date_limite WHERE id_projet=:id_projet";
+ String sql = "UPDATE projet SET titre=:titre, sujet=:sujet, date_limite=:date_limite WHERE id_projet=:id_projet";
             Query query = entityManager.createNativeQuery(sql);
             query.setParameter("titre", projet.getTitre())
                     .setParameter("sujet", projet.getSujet())
@@ -169,52 +149,9 @@ public class ProjetController {
         return "redirect:/projet";
     }
 
-    /*   @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
-    public String projet(ModelMap map, @PathVariable(value = "idProjet") Long idProjet) throws SQLException {
-        System.out.println("/projet");
-        Projet projet = Projet.getById(idProjet);
-        map.put("projet", projet);
-        return "projet";
-    }
-    
-    public String equipe(ModelMap map, @PathVariable(value = "idProjet") Long idProjet) throws SQLException {
-        System.out.println("Equipes");
-        List<Equipe> equipes = Projet.getEquipe(idProjet);
-        map.put("equipes", equipes);
-        return "projet";
-    }*/
-    /**
-     * Peuple les valeurs de la liste déroulante <code>categories</code> dans la
-     * JSP
-     *
-     * @return
-     */
     @ModelAttribute("promotions")
     public List<Promotion> GetPromotions() throws SQLException {
         List<Promotion> promotions = entityManager.createQuery("select p from Promotion p order by p.id").getResultList();
         return promotions;
     }
-
-    /* @ModelAttribute("createur")
-  public Personne GetCreateur() throws SQLException {
-    Personne createur = (Personne) entityManager.createQuery("select p from Personne p where p.id = 1");
-    return createur;
-  }*/
- /*
-  
-  
-  
-  
-  public static Map<Integer, String> getCategories() throws SQLException {
-    HashMap<Integer, String> result = new HashMap();
-    String sql = "SELECT id_categorie, libelle FROM categorie";
-    Connection connection = Database.getConnection();
-    Statement stmt = connection.createStatement();
-    ResultSet rs = stmt.executeQuery(sql);
-    while (rs.next()) {
-      result.put(rs.getInt("id_categorie"), rs.getString("libelle"));
-    }
-    return result;
-  }
-     */
 }

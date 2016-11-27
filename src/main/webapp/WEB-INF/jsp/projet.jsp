@@ -4,7 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%> --%>
 
 <jsp:useBean id="today" class="java.util.Date"/> 
-<div class="col-sm-8">
+<div class="col-sm-8 col-md-8" col-lg-8>
     <div class="well">
 
         <p:header title="Projet"/>
@@ -13,7 +13,7 @@
             <dt class="col-sm-pull-10">Promotion :</dt><dd class="text-left"> ${projet.promotion.name}</dd>
             <dt class="text-right">Nb projets de la promotion :</dt><dd class="text-left">${projet.promotion.projects.size()}</dd>
             <dt>Nb etudiants de la promotion :</dt><dd class="text-left">${projet.promotion.etudiants.size()}</dd>
-            <dt class="text-right">Crée par : </dt><dd class="text-left">${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}</dd>
+            <dt class="text-right">Cr?e par : </dt><dd class="text-left">${projet.createur.idPersonne} ${projet.createur.nom} ${projet.createur.prenom}</dd>
             <dt class="text-right">Sujet :</dt><dd class="text-left">${projet.getSujet()}</dd>
             <dt>Fin le :</dt><dd class="text-left">${projet.getDateLimite()}</dd>   
         </dl>
@@ -26,7 +26,7 @@
 
 </div>
 
-<div class="col-sm-8 ">
+<div class="col-sm-8 col-md-8" col-lg-8 ">
     <c:if test="${sessionScope['user'].profil == false }">
         <c:if test="${sessionScope['user'].promotions.size() != 0}">
             <c:forEach items="${sessionScope['user'].promotions}" var="promotion">

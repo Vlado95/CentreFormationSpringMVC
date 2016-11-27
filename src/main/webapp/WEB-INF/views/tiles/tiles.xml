@@ -46,43 +46,10 @@
        <put-attribute name="body" value="/WEB-INF/jsp/personne.jsp" />  
    </definition> 
    
-<!--   <definition name="Upload" extends="base-definition">  
-       <put-attribute name="title" value="upload" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/Upload.jsp" />  
-   </definition> 
-   -->
    <definition name="Success" extends="base-definition">  
        <put-attribute name="title" value="Success" />  
        <put-attribute name="body" value="/WEB-INF/jsp/Success.jsp" />  
    </definition> 
    
-   
-<!--   <definition name="persistenceSqlException" extends="base-definition">  
-       <put-attribute name="title" value="persistenceSqlException" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/persistenceSqlException.jsp" />  
-   </definition> -->
-   
-<!--   <definition name="formConnexion" extends="base-definition">  
-       <put-attribute name="title" value="formConnexion" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/formConnexion.jsp" />  
-   </definition>  -->
-<!--   
-       <definition name="formProjet" extends="base-definition">  
-       <put-attribute name="title" value="projets" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/formProjet.jsp" />  
-   </definition>  -->
-
-
-   <!-- Product Page -->
-   <definition name="products" extends="base-definition">  
-       <put-attribute name="title" value="Products" />  
-       <put-attribute name="body" value="/WEB-INF/views/pages/products.jsp" />  
-   </definition>  
-       
-   <!-- Contact-us Page -->
-   <definition name="contactus" extends="base-definition">  
-       <put-attribute name="title" value="Contact Us" />  
-       <put-attribute name="body" value="/WEB-INF/views/pages/contactus.jsp" />  
-   </definition>  
   
 </tiles-definitions>

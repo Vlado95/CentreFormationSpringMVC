@@ -5,7 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div class="col-sm-2 sidenav well">
+<div class="col-md-2 col-lg-2 col-sm-2 sidenav well">
     <div class="well">
 
 

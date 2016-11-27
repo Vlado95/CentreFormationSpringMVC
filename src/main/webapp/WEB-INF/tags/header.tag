@@ -8,7 +8,12 @@
       <ul class="nav navbar-nav">
             
         <li class="active"><a href=".">Acceuil</a></li>
-        <li><a href="projet">Projets</a></li>
+        <li><a href="projet">Liste de projets</a></li>
+        <li> <c:if test="${sessionScope['user'].profil == true }">
+
+            <a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="new-projet"><span class="glyphicon glyphicon-plus"></span> Creér un nouveau projet</a>
+        </c:if>
+        </li>
         <li><a href="session">Manipuler les sessions</a></li>
       </ul>
       <ul class="navbar-form nav navbar-nav navbar-right">

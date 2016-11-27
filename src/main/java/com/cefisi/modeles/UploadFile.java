@@ -13,7 +13,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -29,15 +32,17 @@ public class UploadFile {
     @Column(name = "upload_id")
     private long id;
 
-    @Column(name = "id_persoAjour")
-    private long idPersoAjour;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_persoAjour")
+    private Personne persoAjour;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_auteur")
+    private Personne auteur;
     
-    @Column(name = "id_auteur")
-    private long idAuteur;
-    
-     @Column(name = "id_equipe")
-    private long idEquipe;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_equipe")
+    private Equipe equipe;
     
     @Column(name = "FILE_NAME")
     private String fileName;
@@ -92,13 +97,13 @@ public class UploadFile {
         this.data = data;
     }
 
-    public long getIdPersoAjour() {
-        return idPersoAjour;
-    }
-
-    public void setIdPersoAjour(long idPersoAjour) {
-        this.idPersoAjour = idPersoAjour;
-    }
+//    public long getIdPersoAjour() {
+//        return idPersoAjour;
+//    }
+//
+//    public void setIdPersoAjour(long idPersoAjour) {
+//        this.idPersoAjour = idPersoAjour;
+//    }
 
     public Date getDateMisaJr() {
         return dateMisaJr;
@@ -116,13 +121,13 @@ public class UploadFile {
         this.description = description;
     }
 
-    public long getIdAuteur() {
-        return idAuteur;
-    }
-
-    public void setIdAuteur(long idAuteur) {
-        this.idAuteur = idAuteur;
-    }
+//    public long getIdAuteur() {
+//        return idAuteur;
+//    }
+//
+//    public void setIdAuteur(long idAuteur) {
+//        this.idAuteur = idAuteur;
+//    }
 
     public Date getDateAjout() {
         return dateAjout;
@@ -132,14 +137,39 @@ public class UploadFile {
         this.dateAjout = dateAjout;
     }
 
-    public long getIdEquipe() {
-        return idEquipe;
+//    public long getIdEquipe() {
+//        return idEquipe;
+//    }
+//
+//    public void setIdEquipe(long idEquipe) {
+//        this.idEquipe = idEquipe;
+//    }
+
+    public Personne getPersoAjour() {
+        return persoAjour;
     }
 
-    public void setIdEquipe(long idEquipe) {
-        this.idEquipe = idEquipe;
+    public void setPersoAjour(Personne persoAjour) {
+        this.persoAjour = persoAjour;
     }
 
+    public Personne getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(Personne auteur) {
+        this.auteur = auteur;
+    }
+
+    public Equipe getEquipe() {
+        return equipe;
+    }
+
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
+
+    
     
     
 }

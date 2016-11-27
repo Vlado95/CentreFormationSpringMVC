@@ -55,7 +55,7 @@ public class UploadController {
             map.put("equipe", equipe);
             map.put("action", "upload-"+idEquipe);
             map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
-		return "Upload";
+		return "formUpload";
 	}
     @Transactional
     @RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.POST)
@@ -73,8 +73,8 @@ public class UploadController {
                 System.out.println("Saving file: " + aFile.getOriginalFilename() +aFile.getContentType());
                 
                // UploadFile uploadFile = new UploadFile();
-                uploadFile.setIdAuteur(auteur.getIdPersonne());
-                uploadFile.setIdEquipe(idEquipe);
+                uploadFile.setAuteur(auteur);
+                uploadFile.setEquipe(equipe);
                 uploadFile.setFileName(aFile.getOriginalFilename());
                 uploadFile.setType(aFile.getContentType());
                 uploadFile.setData(aFile.getBytes());
@@ -123,7 +123,7 @@ public class UploadController {
             System.out.println("ok");
             map.put("message", "la doc  a été bien suprimée");
         }
-        return null;
+        return "redirect:/equipe-"+uploadFile.getEquipe().getId();
     }
     
     
@@ -136,7 +136,7 @@ public class UploadController {
             map.put("equipe", uploadFile);
             map.put("action", "upload-"+idEquipe+"/"+id+"-modify");
             map.put("titre", "Modifier le doc "+uploadFile.getId());
-		return "UploadMod";
+		return "formUploadMod";
 	}
     @Transactional
     @RequestMapping(value = "/upload-{idEquipe}/{id}-modify", method = RequestMethod.POST)
@@ -172,33 +172,5 @@ public class UploadController {
         return "redirect:/equipe-"+idEquipe;
     }	
     
-    
-    
-////	@Autowired
-////	private FileUploadDAO fileUploadDao;
-////
-////	@RequestMapping(value = "/", method = RequestMethod.GET)
-////	public String showUploadForm(HttpServletRequest request) {
-////		return "Upload";
-////	}
-////	
-////    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
-////    public String handleFileUpload(HttpServletRequest request,
-////            @RequestParam CommonsMultipartFile[] fileUpload) throws Exception {
-////         
-////        if (fileUpload != null && fileUpload.length > 0) {
-////            for (CommonsMultipartFile aFile : fileUpload){
-////                 
-////                System.out.println("Saving file: " + aFile.getOriginalFilename());
-////                
-////                UploadFile uploadFile = new UploadFile();
-////                uploadFile.setFileName(aFile.getOriginalFilename());
-////                uploadFile.setData(aFile.getBytes());
-////                fileUploadDao.save(uploadFile);                
-////            }
-////        }
-//// 
-////        return "Success";
-  //  }	
 }
 
