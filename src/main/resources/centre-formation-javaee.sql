@@ -68,7 +68,9 @@ CREATE TABLE IF NOT EXISTS personne (
   nom VARCHAR(45) NOT NULL,
   prenom VARCHAR(45) NOT NULL,
   email VARCHAR(45) NOT NULL,
+  confirmEmail VARCHAR(45) NOT NULL,
   pwd  VARCHAR(45) NOT NULL,
+  confirmPwd  VARCHAR(45) NOT NULL,
   profil  boolean not null default false,
   enabled boolean NULL,
   PRIMARY KEY (id_personne),
@@ -178,17 +180,17 @@ TRUNCATE verification_token;
 	  END;
 		START TRANSACTION;
         
-	INSERT INTO personne(id_personne,nom, prenom, email,pwd,profil) VALUES
-		(1, 'Haddock', 'Archibald', 'haddock@moulinsart.be','karara',false),
-		(2,'Castafiore', 'Bianca', 'bianca.castafiore@scala.it','kamiri',false),
-		(3, 'Tournesol', 'Tryphon', 'tournesol@moulinsart.be','milou',false),
-		(4,'Lampion', 'Séraphin', 'lampion@mondass.fr','malin',false),
-		(5,'Krad', 'Imen', 'imkr@yahoo.fr','ilala',false),
-		(6,'Siby', 'Abdoulaye', 'absiby@yahoo.fr','soloma',false),
-		(7, 'Buittot', 'Eleanor', 'bui.elea@gamil.com','sisqo',false),
-		(8,'Mickael', 'Angelo', 'M.angelo@tortue.fr','sabin',false),
-		(9,'Plasse', 'Michel', 'edke@yahoo.fr','sodoma',true),
-		(10,'Feyte', 'Floria', 'f.feyte@gamil.com','sisoko', true);
+	INSERT INTO personne(id_personne,nom, prenom, email,confirmEmail, pwd, confirmPwd, profil) VALUES
+		(1, 'Haddock', 'Archibald', 'haddock@moulinsart.be','haddock@moulinsart.be','karara','karara',false),
+		(2,'Castafiore', 'Bianca', 'bianca.castafiore@scala.it','bianca.castafiore@scala.it','kamiri','kamiri',false),
+		(3, 'Tournesol', 'Tryphon', 'tournesol@moulinsart.be','tournesol@moulinsart.be','milou','milou',false),
+		(4,'Lampion', 'Séraphin', 'lampion@mondass.fr','lampion@mondass.fr','malin','malin',false),
+		(5,'Krad', 'Imen', 'imkr@yahoo.fr','imkr@yahoo.fr','ilala','ilala',false),
+		(6,'Siby', 'Abdoulaye', 'absiby@yahoo.fr','absiby@yahoo.fr','soloma','soloma',false),
+		(7, 'Buittot', 'Eleanor', 'bui.elea@gamil.com','bui.elea@gamil.com','sisqo','sisqo',false),
+		(8,'Mickael', 'Angelo', 'M.angelo@tortue.fr','M.angelo@tortue.fr','sabin','sabin',false),
+		(9,'Plasse', 'Michel', 'edke@yahoo.fr','edke@yahoo.fr','sodoma','sodoma',true),
+		(10,'Feyte', 'Floria', 'f.feyte@gamil.com','f.feyte@gamil.com','sisoko','sisoko', true);
 
 	INSERT INTO promotion (id_promotion, nom, debut_date, fin_date) VALUES
 		(1, 'Decisionel et developpement JEE','2015-3-07 22:00:00','2016-11-25 22:00:00' ),
@@ -206,9 +208,9 @@ TRUNCATE verification_token;
 		(2, 8);
 		
 	INSERT INTO projet (id_projet,id_promotion, id_createur,sujet,titre,date_creation, date_limite ) VALUES
-		(1, 1,9,'Gérer les terrains','flow managment project','2016-4-12 22:00:00','2016-7-12 22:00:00'),
-		(2, 1,10,'interface contenteiux','scores-decision project','2016-5-15 22:00:00','2016-8-14 22:00:00'),
-		(3, 1,9,'gerer les annonces legales','socores-decisions project','2016-6-13 22:00:00','2016-9-11 22:00:00');
+		(1, 1,9,'Gérer les terrains','flow managment project','2016-4-12 22:00:00','2017-7-12 22:00:00'),
+		(2, 1,10,'interface contenteiux','scores-decision project','2016-5-15 22:00:00','2017-8-14 22:00:00'),
+		(3, 1,9,'gerer les annonces legales','socores-decisions project','2016-6-13 22:00:00','2017-9-11 22:00:00');
 
 	INSERT INTO equipe (id_equipe, id_projet,id_createur,date_creation, resume) VALUES
 		(1, 1,2,'2016-4-20 22:00:00','Equipe n° 1'),

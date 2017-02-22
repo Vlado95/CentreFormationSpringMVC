@@ -105,6 +105,7 @@
     </head>
     <body>
         <div class="vid-container">
+             <li><a href="reg-new-user">nouveau utilisateur</a></li>
             <div class="inner-container">
                 <div class="box">
                     <h1>Connexion</h1>

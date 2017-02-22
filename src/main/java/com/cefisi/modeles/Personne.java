@@ -50,6 +50,12 @@ public class Personne {
 
     @Column(name = "profil")
     private Boolean profil;
+    
+    @Transient
+    private String confirmEmail;
+    
+    @Transient
+    private String confirmPassword;
 
     public Personne() {
 
@@ -137,5 +143,22 @@ public class Personne {
 //        query.getSingleResult();
 //        return result;
 //    }
+
+    public String getConfirmEmail() {
+        return confirmEmail;
+    }
+
+    public void setConfirmEmail(String confirmEmail) {
+        this.confirmEmail = confirmEmail;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
 
 }

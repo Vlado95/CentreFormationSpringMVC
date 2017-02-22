@@ -42,7 +42,7 @@ public class ConnectionFilter implements Filter {
     System.out.println("filtre connexion appelé");
     final HttpServletRequest req = (HttpServletRequest) request;
     final HttpSession session = req.getSession();
-    if (session != null && session.getAttribute("user") != null) {
+    if (session != null && session.getAttribute("user") != null || req.getServletPath().startsWith("/reg") ) {
       chain.doFilter(request, response);
     }
     else {

@@ -4,16 +4,18 @@
 
 </div>
  <!--<h1>${titre}</h1>-->
-<!--       
+       
     <ul>
+        <li><a href="email">Send mail</a></li>
         <li><a href="projet-1">projet-1</a></li>
+        <li><a href="reg-new-user">nouveau utilisateur</a></li>
         <li><a href="projet-1-new-equipe">projet-1-new-equipe</a></li>
         <li><a href="projet">projets</a></li>
         <li><a href="new-projet">new-projet</a></li>
         <li><a href="projet-4-modifier">projet-4-modifier</a></li>
         <li><a href="equipe-1">equipe-1</a></li>
         <li><a href="equipe-7-new-membre">equipe-7-new-membre</a></li>
-        <li><a href="personnes">Personnes</a></li
+        <li><a href="personnes">Personnes</a></li>
         <li><a href="personne-1">Personne-1</a></li>
         <li><a href="upload-1">upload-1</a></li>
         <li> <a href="equipe-1-sup-membre">equipe-1-new-membre</a></li>
@@ -25,7 +27,7 @@
         
         
         
-    </ul>-->
+    </ul>
 
 
 
