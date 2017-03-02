@@ -24,6 +24,7 @@
 <tr>
 <td>Confirm Password :</td><td>${user.confirmPassword}</td>
 </tr>
+
 </table>
 </body>
 </html>

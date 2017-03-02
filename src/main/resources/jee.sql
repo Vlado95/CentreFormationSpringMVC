@@ -75,6 +75,33 @@ CREATE TABLE IF NOT EXISTS personne (
   UNIQUE INDEX email_UNIQUE (email ASC))
 ENGINE = InnoDB§
 
+CREATE TABLE IF NOT EXISTS adresse (
+  id_adresse BIGINT(20) NOT NULL AUTO_INCREMENT,
+  rue VARCHAR(225) NOT NULL,
+  code_postal VARCHAR(10) NOT NULL,
+  ville VARCHAR(100) NOT NULL,
+  pays  VARCHAR(45) NOT NULL,
+  mobile  VARCHAR(45) NOT NULL,
+  fixe  VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_adresse))
+ENGINE = InnoDB§
+
+
+CREATE TABLE IF NOT EXISTS personne_adresse (
+  id_personne BIGINT(20) NOT NULL,
+  id_adresse BIGINT(20) NOT NULL,
+  PRIMARY KEY (id_personne, id_adresse),
+  CONSTRAINT fk_personne_adresse_personne
+    FOREIGN KEY (id_personne)
+    REFERENCES personne (id_personne)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_personne_adresse_adresse
+    FOREIGN KEY (id_adresse)
+    REFERENCES adresse (id_adresse)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB§
 
 
 CREATE TABLE IF NOT EXISTS membre_promotion (
@@ -164,8 +191,9 @@ BEGIN
 	TRUNCATE personne;
         TRUNCATE projet;
         TRUNCATE promotion;
-       TRUNCATE files_upload;
-TRUNCATE verification_token;
+        TRUNCATE files_upload;
+        TRUNCATE verification_token;
+        TRUNCATE adresse;
 	-- Remettre les contraintes d'integrite
 	SET FOREIGN_KEY_CHECKS=1;
 

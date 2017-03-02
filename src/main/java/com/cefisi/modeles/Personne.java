@@ -23,7 +23,6 @@ public class Personne {
 
 //    @PersistenceContext
 //    private EntityManager entityManager;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_personne")
@@ -50,17 +49,52 @@ public class Personne {
 
     @Column(name = "profil")
     private Boolean profil;
-    
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "personne_adresse",
+//            joinColumns = @JoinColumn(name = "id_adresse"),
+//            inverseJoinColumns = @JoinColumn(name = "id_personne")
+//    )
+//    private Adresse adresse;
+
     @Transient
     private String confirmEmail;
-    
+
     @Transient
     private String confirmPassword;
 
+    @Transient
+    private String rue;
+
+    @Transient
+    private String codePostal;
+
+    @Transient
+    private String ville;
+
+    @Transient
+    private String pays;
+
+    @Transient
+    private String mobile;
+
+    @Transient
+    private String fixe;
+    
+    
     public Personne() {
 
     }
+    public Personne(String nom, String prenom, String email, String password) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+    }
 
+      
+   
     public Long getIdPersonne() {
         return idPersonne;
     }
@@ -69,7 +103,6 @@ public class Personne {
     public void setId(Long id) {
         this.id = id;
     }*/
-
     public String getNom() {
         return nom;
     }
@@ -143,7 +176,6 @@ public class Personne {
 //        query.getSingleResult();
 //        return result;
 //    }
-
     public String getConfirmEmail() {
         return confirmEmail;
     }
@@ -160,5 +192,60 @@ public class Personne {
         this.confirmPassword = confirmPassword;
     }
 
+    public String getRue() {
+        return rue;
+    }
+
+    public void setRue(String rue) {
+        this.rue = rue;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public String getPays() {
+        return pays;
+    }
+
+    public void setPays(String pays) {
+        this.pays = pays;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getFixe() {
+        return fixe;
+    }
+
+    public void setFixe(String fixe) {
+        this.fixe = fixe;
+    }
+
+//    public Adresse getAdresse() {
+//        return adresse;
+//    }
+//
+//    public void setAdresse(Adresse adresse) {
+//        this.adresse = adresse;
+//    }
 
 }
