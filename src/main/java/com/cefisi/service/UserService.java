@@ -27,5 +27,6 @@ public interface UserService {
 	List<Personne> findAllUsers(); 
 	
 	//boolean isUserSSOUnique(Integer id, String sso);
-    
+       
+        Personne getCurrentUser(); 
 }

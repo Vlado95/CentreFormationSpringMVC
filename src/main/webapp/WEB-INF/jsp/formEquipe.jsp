@@ -29,7 +29,7 @@
             </div> 
         </div>                     
     </c:if>
-    
+
     <c:if test="${action == 'Modifier'}">
         <div class="modal-body">            
             projet :${equipe.projet.titre} <br/>
@@ -91,8 +91,7 @@
 
         </div>   
     </c:if>
-
-
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div>${message}</div>
 </form:form>
 

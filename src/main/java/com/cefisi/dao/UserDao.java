@@ -9,13 +9,16 @@ public interface UserDao {
 
 	Personne findById(int idPersonne);
 	
-	///Personne findBySSO(String sso);
+	Personne findByUserName(String user);
 	
 	void save(Personne user);
 	
 	//void deleteBySSO(String sso);
 	
 	List<Personne> findAllUsers();
+        
+        
+        Personne getCurrentUser();
 
 }
 

@@ -16,6 +16,7 @@ package com.cefisi.controllers;
 import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.UploadFile;
+import com.cefisi.service.UserService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -27,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -48,24 +52,29 @@ public class UploadController {
     
     @PersistenceContext
     private EntityManager entityManager;
+    
+    @Autowired
+    UserService userService;
 
 	@RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.GET)
 	public String showUploadForm(HttpServletRequest request,  ModelMap map , @PathVariable(value = "idEquipe") long idEquipe ) {
+            Personne auteur =  (Personne) userService.getCurrentUser();
             Equipe equipe = entityManager.find(Equipe.class, idEquipe);
             map.put("equipe", equipe);
-            map.put("action", "upload-"+idEquipe);
+            map.put("action", /*"Upload"*/"upload-"+idEquipe);
             map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
+            System.out.println("Saving file: " + auteur.getNom());
 		return "formUpload";
 	}
     @Transactional
     @RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.POST)
     public String handleFileUpload(@Valid @ModelAttribute("uploadFile") UploadFile uploadFile,HttpServletRequest request, ModelMap map, 
-            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session 
+            @RequestParam CommonsMultipartFile[] fileUpload //, HttpSession session 
     , @PathVariable(value = "idEquipe") long idEquipe
     ) throws SQLException {
-        Personne auteur =  (Personne) session.getAttribute("user"); 
+        Personne auteur =  (Personne) userService.getCurrentUser(); //session.getAttribute("user"); 
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-            map.put("action", "upload-"+idEquipe);
+            map.put("action", /*"Upload"*/"upload-"+idEquipe);
             map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
         if (fileUpload != null && fileUpload.length > 0) {
             for (CommonsMultipartFile aFile : fileUpload){

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%-- 
     Document   : equipe
@@ -9,16 +10,19 @@
 <jsp:useBean id="today" class="java.util.Date"/> 
 <div class="col-sm-8 col-dm-8 col-lg-8 ">
     <div class="well">
+       <!--${auteur2.name}-->
         <br/>Resume : ${equipe.resume}
         <br/>Projet : ${equipe.projet.titre} 
         <br/>Date de creation : ${equipe.dateCreation}
         <br/>Createur :<a href="personne-${equipe.createur.idPersonne}"> ${equipe.createur.nom} </a>
-        <c:if test="${sessionScope['user'].profil == false && sessionScope['user'].idPersonne == equipe.createur.idPersonne }">
-            <c:if test="${sessionScope['user'].idPersonne != membre.idPersonne }">
-
+        <sec:authorize access="hasRole('Etudiant')">
+            <c:if test="${pageContext.request.userPrincipal.name.equals(equipe.createur.email)}">
+                <%--<c:if test="${sessionScope['user'].idPersonne != membre.idPersonne }">--%>
                 </br><a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}-modifier">Modifier Equipe</a>
+                <%--</c:if>--%>
             </c:if>
-        </c:if>
+        </sec:authorize>
+
         <div class="row">
             <div class="col-dm-8 col-md-offset-3 col-sm-8 col-sm-offset-3 col-lg-8 col-lg-offset-3">
                 <div class="col-sm-4 col-md-4 col-lg-4" >
@@ -28,11 +32,11 @@
                                 <c:forEach items="${equipe.membres}" var="membre">
 
                                     <li><a href="personne-${membre.idPersonne}">${membre.nom}</a> 
-                                        <c:if test="${sessionScope['user'].profil == false && sessionScope['user'].idPersonne == equipe.createur.idPersonne }">
-                                            <c:if test="${sessionScope['user'].idPersonne != membre.idPersonne }">
+                                        <sec:authorize access="hasRole('Etudiant')">
+                                            <c:if test="${pageContext.request.userPrincipal.name.equals(equipe.createur.email)}"> 
                                                 <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}/${membre.idPersonne}-sup-membre"> <span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></a>
                                                 </c:if>
-                                            </c:if>
+                                            </sec:authorize>
                                     </li>
 
                                 </c:forEach>
@@ -44,12 +48,11 @@
                         <c:if test="${message != null}">
                             <h1>${message}</h1>
                         </c:if>
-                        <c:if test="${sessionScope['user'].profil == false && sessionScope['user'].idPersonne == equipe.createur.idPersonne }">
-                            <c:if test="${sessionScope['user'].idPersonne != membre.idPersonne }">
-
+                        <sec:authorize access="hasRole('Etudiant')">
+                            <c:if test="${pageContext.request.userPrincipal.name.equals(equipe.createur.email)}">
                                 <a href="#" data-toggle="modal" data-target="#dialog" data-url="equipe-${equipe.id}-new-membre">Ajouter un membre</a>
                             </c:if>
-                        </c:if>
+                        </sec:authorize>
                 </div>
                 <div class="col-md-5 col-sm-5 col-lg-5">
                     <h4>les personnes qui n'ont pas d'equipe : </h4>   <ol>
@@ -67,8 +70,8 @@
 <div class="col-sm-9  col-md-9 col-lg-9">
     <c:if test="${equipe.membres.size() != 0 }">   
         <c:forEach items="${equipe.membres}" var="membre">
-            <c:if test="${membre.idPersonne == sessionScope['user'].idPersonne}"> 
-                <c:if test="${equipe.projet.dateLimite.time gt today.time && sessionScope['user'].profil == false }">
+            <c:if test="${pageContext.request.userPrincipal.name.equals(membre.email)}"> 
+                <c:if test="${equipe.projet.dateLimite.time gt today.time}">
                     <div class="text-right">
                         <a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="upload-${equipe.id}">Ajouter un fichier</a>
                     </div>
@@ -149,7 +152,7 @@
             </c:if>
         </c:forEach>
     </c:if>
-    <c:if test="${sessionScope['user'].idPersonne == equipe.projet.createur.idPersonne}"> 
+    <c:if test="${pageContext.request.userPrincipal.name.equals(equipe.projet.createur.email)}"> 
         <c:if test="${files.size() != 0}">
 
             <table class="table table-bordered table-curved well">

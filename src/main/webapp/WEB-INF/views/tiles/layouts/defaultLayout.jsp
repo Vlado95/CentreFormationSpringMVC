@@ -32,25 +32,29 @@
                     <%--<c:if test="${sessionScope['user'] != null}">--%>
                     <tiles:insertAttribute name="header" />
                     <%--</c:if>--%>
-                   <%--<c:if test="${sessionScope['user'] == null}">--%>
+                    <%--<c:if test="${sessionScope['user'] == null}">--%>
                     <%--<tiles:insertAttribute name="connexionHeader" />--%>
                     <%--</c:if>--%> 
                 </header>
             </div>
+
             <div class=" text-center">
                 <div class="row content">
-                    <div id="menu">
-                        <section >
-                            <tiles:insertAttribute name="menu" />
-                        </section>
-                    </div>
-                    <div class=""id="main"> 
+                    <c:if test="${pageContext.request.userPrincipal.name !=null}">  
+                        <div id="menu">
+                            <section >
+                                <tiles:insertAttribute name="menu" />
+                            </section>
+                        </div>
+                    </c:if>
+                    <div id="main"> 
                         <section>
                             <tiles:insertAttribute name="body" />
                         </section>
                     </div>
                 </div>
             </div>
+
             <div id="footer"> 
                 <footer>
                     <tiles:insertAttribute name="footer" />

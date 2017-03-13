@@ -50,7 +50,7 @@
         <div class="form-group">
             <label class="col-xs-3 control-label">Date limite:</label>
             <div class="col-xs-5">
-                <form:input class="form-control" path="dateLimite" placeholder="YYYY/MM/DD"/>Date format(YYY/MM/DD) 
+                <form:input class="form-control" path="dateLimite" placeholder="YYYY/MM/DD"/><small><span>Date format(YYY/MM/DD)</span></small> 
                 <form:errors path="dateLimite" cssClass="erreur"/>
             </div>
         </div>
@@ -59,6 +59,7 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </div>
     </div> 
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div>${message}</div>
 </form:form>
 <!--</div> -->

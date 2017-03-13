@@ -1,6 +1,6 @@
 package com.cefisi.config;
 
-import context.ConnectionFilter;
+//import context.ConnectionFilter;
 import context.EncodingFilter;
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;  
@@ -27,7 +27,7 @@ public class WebInitializer implements WebApplicationInitializer {
 
     }
 
-	protected Filter[] getServletFilters() {
-		return new Filter[]{new ConnectionFilter(),new EncodingFilter()};
-	}
+//	protected Filter[] getServletFilters() {
+//		return new Filter[]{new ConnectionFilter(),new EncodingFilter()};
+//	}
 }

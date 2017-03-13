@@ -9,30 +9,16 @@
     <div class="well">
 
 
-        <p><a href="personne-${sessionScope['user'].idPersonne}">My Profile</a></p>
+        <p><a href="personne-${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.idPersonne}">My Profile</a></p>
         <img src="${pageContext.request.contextPath}/resources/images/ninja.png" class="img-circle" height="65" width="65" alt="Avatar">
     </div>
     <div class="well">
+        <c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal != null}">
+            <p>${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.nom} 
+                ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.prenom} </p>
+            <p>${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.role }</p>
+            <p>${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.promotion} </p>
 
-
-        <c:if test="${sessionScope['user'] != null}">
-            <p>       ${sessionScope['user'].nom} ${sessionScope['user'].prenom} </p>
-
-
-            <c:if test="${sessionScope['user'].profil == false }">
-                <p>   Etudiant    </p>
-            </c:if>
-            <c:if test="${sessionScope['user'].profil == true }">
-                <p>   Professeur    </p>
-            </c:if>
-            <jsp:useBean id="today" class="java.util.Date"/>   
-            <c:if test="${sessionScope['user'].promotions.size() != 0}">
-                <c:forEach items="${sessionScope['user'].promotions}" var="promotion">
-                    <c:if test="${promotion.finDate.time gt today.time && promotion.debutDate.time lt today.time}">
-                        <p>${promotion.name} </p>
-                    </c:if>
-                </c:forEach>
-            </c:if>
         </c:if>
 
     </div>

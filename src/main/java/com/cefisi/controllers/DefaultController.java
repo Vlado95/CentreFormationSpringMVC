@@ -22,26 +22,7 @@ public class DefaultController {
     
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(ModelMap map) {
-       map.put("msg", "Hello Spring 4 Web MVC!");
+       map.put("msg", "This is home page");
        return "index";
-   }
-       /*@RequestMapping(value = { "/"}, method = RequestMethod.GET)
-    public String homePage(ModelMap model) {
-        return "home";
-    }*/
- 
-    @RequestMapping(value = { "/products"}, method = RequestMethod.GET)
-    public String productsPage(ModelMap model) {
-        return "products";
-    }
- 
-    @RequestMapping(value = { "/contactus"}, method = RequestMethod.GET)
-    public String contactUsPage(ModelMap model) {
-        return "contactus";
-    }
-     
+   }   
 }
-    
-
-
-

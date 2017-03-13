@@ -15,25 +15,15 @@
 
 <jsp:useBean id="today" class="java.util.Date"/>  
 <div class="col-sm-8">
-    <div class="well">
+    <div class="well"> 
         <h2>${personne.prenom}  ${personne.nom}</h2>
-        <br/>ID : ${personne.idPersonne} 
-        
-        <c:if test="${personne.promotions.size() != 0}">
-            <br/>Promotion : 
-            <c:forEach items="${personne.promotions}" var="promotion">
-                <c:if test="${promotion.finDate.time gt today.time && promotion.debutDate.time lt today.time}">
-                    ${promotion.name} 
-                </c:if>
-            </c:forEach>
-        </c:if>
-        </br>Profil : 
-        <c:if test="${personne.profil == false }">
-            Etudiant    
-        </c:if>
-        <c:if test="${personne.profil == true }">
-            Professeur    
-        </c:if>
+         <dl class="dl-horizontal span4 offset4 centered col-md-offset-3">
+            <dt class="col-sm-pull-10">Promotion :</dt><dd class="text-left">  ${personne.promo}</dd>
+            <dt class="text-right">Profil : </dt><dd class="text-left">${personne.role}</dd>
+            <dt class="text-right">email : </dt><dd class="text-left">${personne.email}</dd>
+            <dt class="text-right">Adresse  :</dt><dd class="text-left">7 impasse du barreau</dd>
+            <dt></dt><dd class="text-left">95280 Jouy le Moutier</dd>   
+        </dl>
     </div>
 </div>
 

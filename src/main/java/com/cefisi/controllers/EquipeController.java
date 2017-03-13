@@ -9,6 +9,8 @@ import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.Projet;
 import com.cefisi.modeles.UploadFile;
+import com.cefisi.service.CustomUser;
+import com.cefisi.service.UserService;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +23,9 @@ import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import static jdk.nashorn.internal.objects.NativeArray.map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -41,6 +46,9 @@ public class EquipeController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    UserService userService;
+    
     @Transactional
     @RequestMapping(value = "/equipe-{idEquipe}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) throws SQLException {
@@ -56,6 +64,7 @@ public class EquipeController {
         map.put("files", files);
         map.put("equipe", equipe);
         map.put("membreB", membreB);
+//        map.put("auteur2", auteur2);
         return "equipe";
     }
 
@@ -73,10 +82,10 @@ public class EquipeController {
     @Transactional
     @RequestMapping(value = "/projet-{idProjet}-new-equipe", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("equipe") Equipe equipe,
-            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet, 
-            HttpSession session
+            BindingResult result, ModelMap map, @PathVariable(value = "idProjet") long idProjet//, 
+            //HttpSession session
     ) throws SQLException {
-        Personne createur2 =  (Personne) session.getAttribute("user");
+        Personne createur2 = userService.getCurrentUser(); // (Personne) session.getAttribute("user");
         Projet projet = entityManager.find(Projet.class, idProjet);
         equipe.setCreateur(createur2);
         map.put("action", "Créer");
@@ -116,10 +125,7 @@ public class EquipeController {
     public String doModify(@Valid  @ModelAttribute("equipe") Equipe equipe,
             BindingResult result, ModelMap map , @PathVariable(value = "idEquipe") long idEquipe,
             @RequestParam("resume") String resume
-          //  HttpSession session
     ) throws SQLException {
-       // Personne createur2 =  (Personne) session.getAttribute("user");
-        //equipe.setId(idEquipe);
         map.put("action", "Modifier");
         map.put("titre", "Modifier equipe");
 
@@ -224,17 +230,6 @@ public class EquipeController {
         if (result.hasErrors()) {
             System.out.println("erreurs");
         } else {
-//            Set<Personne> membres = new HashSet<>(0);
-//            membres.addAll(equipeOld.getMembres());
-//            membres.add(membre);
-//            equipe.setCreateur(equipeOld.getCreateur());
-//            equipe.setId(idEquipe);
-//            equipe.setMembres(membres);
-//            equipe.setProjet(equipeOld.getProjet());
-//            equipe.setDateCreation(equipeOld.getDateCreation());
-//            equipe.setResume(equipeOld.getResume());
-//            entityManager.merge(equipe);
-//            entityManager.flush();
             String sql = "Delete FROM membre_equipe WHERE id_equipe=:id_equipe AND id_personne=:id_personne";
             Query query = entityManager.createNativeQuery(sql);
             query.setParameter("id_personne", membre.getIdPersonne())

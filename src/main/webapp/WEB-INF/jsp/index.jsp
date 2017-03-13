@@ -12,16 +12,27 @@
         <li><a href="projet-1-new-equipe">projet-1-new-equipe</a></li>
         <li><a href="projet">projets</a></li>
         <li><a href="new-projet">new-projet</a></li>
-        <li><a href="projet-4-modifier">projet-4-modifier</a></li>
+        <li><a href="projet-3-modifier">projet-3-modifier</a></li>
         <li><a href="equipe-1">equipe-1</a></li>
-        <li><a href="equipe-7-new-membre">equipe-7-new-membre</a></li>
+        <li><a href="equipe-3-new-membre">equipe-3-new-membre</a></li>
         <li><a href="personnes">Personnes</a></li>
         <li><a href="personne-1">Personne-1</a></li>
-        <li><a href="upload-1">upload-1</a></li>
-        <li> <a href="equipe-1-sup-membre">equipe-1-new-membre</a></li>
+        <li><a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="upload-1">upload-1</a></li>
+        <li> <a href="equipe-1/1-sup-membre">equipe-1/1-sup-membre</a></li>
         <li> <a href="download-document-1">download-1</a></li>
         <li> <a href="delete-document-2">delete</a></li>
          <li><a class="text-left" href="#" data-toggle="modal" data-target="#dialog" data-url="upload-2/1-modify">mod</a></li>
+        
+         <!--$ {pageContext.request.userPrincipal}-->
+       <!--$ {securityContextHolder.context.authentication.details.nom}-->
+        <!--$ { pageContext.request.userPrincipal}-->
+       <br/>
+      
+        ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.idPersonne}<br/>
+        ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.nom}<br/>
+        ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.prenom}<br/>
+        ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.promotion}<br/>
+        ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.role}<br/>
         
         
         

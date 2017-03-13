@@ -107,21 +107,30 @@
         <div class="vid-container">
              <li><a href="reg-new-user">nouveau utilisateur</a></li>
             <div class="inner-container">
+                		<c:if test="${not empty error}">
+			<div class="error">${error}</div>
+		</c:if>
+		<c:if test="${not empty msg}">
+			<div class="msg">${msg}</div>
+		</c:if>
                 <div class="box">
                     <h1>Connexion</h1>
-                    <c:if test="${sessionScope['user'] == null}">
-                        <form  action="connexion" method="post">
+                    <%--<c:if test="${sessionScope['user'] == null}">--%>
+                        <form  name='loginForm' action="connexion" method="post">
                             <div >
 
-                                <input  type="text" name="login" value="${login}" placeholder="Email Address"/>
+                                <input  type="text" name="username"  placeholder="Email Address"/>
                             </div>
                             <div >
                                 <input type="password" name="password"  placeholder="Password"/>
                             </div>
+                            
                             <button type="submit" >Connecter</button>
                             <br/>${msgConnexion}
+                            <input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
                         </form>
-                    </c:if>
+                    <%--</c:if>--%>
                 </div>
             </div>
         </div>

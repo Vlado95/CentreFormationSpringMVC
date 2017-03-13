@@ -9,6 +9,7 @@ import com.cefisi.dao.UserDao;
 import com.cefisi.modeles.Personne;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,17 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Vladimir
  */
-
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao dao;
-    
+
     @Override
     public Personne findById(int idPersonne) {
-       return dao.findById(idPersonne);
+        return dao.findById(idPersonne);
     }
 
     @Override
@@ -43,5 +43,10 @@ public class UserServiceImpl implements UserService{
     public List<Personne> findAllUsers() {
         return dao.findAllUsers();
     }
-    
+
+    @Override
+    public Personne getCurrentUser() {
+        return dao.getCurrentUser();
+    }
+
 }

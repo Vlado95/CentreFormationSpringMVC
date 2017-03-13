@@ -9,6 +9,7 @@ import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.Projet;
 import com.cefisi.modeles.Promotion;
+import com.cefisi.service.UserService;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -44,6 +46,22 @@ public class ProjetController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    UserService userService;
+    
+    
+    
+    @RequestMapping(value = "/projet", method = RequestMethod.GET)
+    public String doGet(ModelMap map
+    ) throws SQLException {
+        System.out.println("/projet");
+        System.out.println("test" );
+        List<Projet> projets = entityManager.createQuery("select p from Projet p").getResultList();
+        map.put("projets", projets);
+        return "projets";
+    }
+
+    
     @Transactional
     @RequestMapping(value = "/projet-{idProjet}", method = RequestMethod.GET)
     public String projet(ModelMap map, @PathVariable(value = "idProjet") long idProjet) throws SQLException {
@@ -85,12 +103,11 @@ public class ProjetController {
     @RequestMapping(value = "/new-projet", method = RequestMethod.POST)
     public String doNew(@Valid @ModelAttribute("projet") Projet projet,
             BindingResult result, ModelMap map, HttpSession session,
-            @RequestParam("promotion.id") long id //, @RequestParam("createur.idPersonne") long idPersonne
+            @RequestParam("promotion.id") long id 
     ) throws SQLException {
         Promotion promotion = entityManager.find(Promotion.class, id);
-        //Personne createur = entityManager.find(Personne.class, idPersonne);
         
-         Personne createur =  (Personne) session.getAttribute("user");
+        Personne createur =  (Personne) userService.getCurrentUser(); //session.getAttribute("user");
         projet.setCreateur(createur);
         projet.setPromotion(promotion);
         projet.setDateCreation(new Date(Calendar.getInstance().getTimeInMillis()));
@@ -115,9 +132,6 @@ public class ProjetController {
     public String askModify(ModelMap map,
             @PathVariable(value = "idProjet") long idProjet) throws SQLException {
         Projet projet = entityManager.find(Projet.class, idProjet);
-        /* if (projet == null) {
-      throw new ItemNotFoundException();
-    }*/
         map.put("projet", projet);
         map.put("action", "Modifier");
         map.put("titre", "Modifier le projet n° " + projet.getId());
@@ -125,8 +139,7 @@ public class ProjetController {
     }
 
     @Transactional
-    @RequestMapping(value = "/projet-{idProjet}-modifier",
-            method = RequestMethod.POST)
+    @RequestMapping(value = "/projet-{idProjet}-modifier", method = RequestMethod.POST)
     public String doModify(
             @Valid Projet projet, // Injection + vérification des annotations du bean
             BindingResult result, // Les erreurs suite à l'injection sont ici

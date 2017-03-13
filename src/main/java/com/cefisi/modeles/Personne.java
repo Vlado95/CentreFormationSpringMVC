@@ -11,10 +11,13 @@ package com.cefisi.modeles;
  */
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -57,7 +60,6 @@ public class Personne {
 //            inverseJoinColumns = @JoinColumn(name = "id_personne")
 //    )
 //    private Adresse adresse;
-
     @Transient
     private String confirmEmail;
 
@@ -81,11 +83,17 @@ public class Personne {
 
     @Transient
     private String fixe;
-    
-    
+
+    @Transient
+    private String role;
+
+    @Transient
+    private String promo;
+
     public Personne() {
 
     }
+
     public Personne(String nom, String prenom, String email, String password) {
         this.nom = nom;
         this.prenom = prenom;
@@ -93,8 +101,13 @@ public class Personne {
         this.password = password;
     }
 
-      
-   
+    public Personne(String email, String password) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+    }
+
     public Long getIdPersonne() {
         return idPersonne;
     }
@@ -143,13 +156,6 @@ public class Personne {
         this.promotions = promotions;
     }
 
-//    public List<Promotion> getPromotions() {
-//        return promotions;
-//    }
-//
-//    public void setPromotions(List<Promotion> promotions) {
-//        this.promotions = promotions;
-//    }
     public List<Equipe> getEquipes() {
         return equipes;
     }
@@ -240,12 +246,37 @@ public class Personne {
         this.fixe = fixe;
     }
 
-//    public Adresse getAdresse() {
-//        return adresse;
-//    }
-//
-//    public void setAdresse(Adresse adresse) {
-//        this.adresse = adresse;
-//    }
+    public String getRole() {
+        if (Objects.equals(getProfil(), Boolean.TRUE)) {
+            role = "Professeur";
+        } else {
+            role = "Etudiant";
+        };
+        return role;
+    }
+
+    public String getPromo() {
+        Iterator prom = promotions.iterator();
+        while (prom.hasNext()) {
+            Promotion popo = (Promotion) prom.next();
+            if (popo.getFinDate().getTime() == getmax()) {
+                promo= popo.getName();
+
+            }
+
+        }
+        return promo;
+    }
+
+    public Long getmax(){
+        Iterator prom = promotions.iterator();
+        Set<Long> findates = new HashSet<>();
+        while (prom.hasNext()) {
+            Promotion po = (Promotion) prom.next();
+            findates.add(po.getFinDate().getTime());
+        }
+        Long max = Collections.max(findates);
+        return max;
+    }
 
 }
