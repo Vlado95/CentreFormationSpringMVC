@@ -7,7 +7,7 @@ import com.cefisi.modeles.Personne;
 
 public interface UserDao {
 
-	Personne findById(int idPersonne);
+	Personne findById(long idPersonne);
 	
 	Personne findByUserName(String user);
 	

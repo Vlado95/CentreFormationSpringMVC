@@ -81,7 +81,7 @@ public class PersonneController{
     @Transactional
     @RequestMapping(value = "/personne-{idPersonne}", method = RequestMethod.GET)
     public String personne(ModelMap map, @PathVariable(value = "idPersonne") long idPersonne) throws SQLException {
-        Personne personne = entityManager.find(Personne.class, idPersonne);
+        Personne personne = userService.findById(idPersonne);//entityManager.find(Personne.class, idPersonne);
         Date today = new Date(Calendar.getInstance().getTimeInMillis());
         map.put("personne", personne);
         return "personne";

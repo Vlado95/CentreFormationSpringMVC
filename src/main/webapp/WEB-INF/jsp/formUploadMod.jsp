@@ -16,7 +16,7 @@
 </div>
 <div class="modal-body"> 
     <%--<form:form method="post"  enctype="multipart/form-data" >--%>
-    <form method="post" action="${action}" enctype="multipart/form-data">
+    <form method="post" action="${baseURL}${action}?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
         <table border="0">
 
 
@@ -36,14 +36,14 @@
             -->
 
             <!--                <tr>
-                                <td colspan="2" align="center"><button type="submit">${action}</button></td>
+                                <td colspan="2" align="center"><button type="submit">$ {action}</button></td>
                             </tr>-->
         </table>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-default">${action}</button>
+            <button type="submit" class="btn btn-default">Modifier</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </div> 
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <!--<input type="hidden" name="$ {_csrf.parameterName}" value="$ {_csrf.token}"/>-->
     </form>
     <%--</form:form>--%>
 </div>

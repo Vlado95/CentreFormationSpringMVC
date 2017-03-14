@@ -56,14 +56,14 @@ public class UserDaoImpl implements UserDao {
 		delete(user);
 	}*/
     @Override
-    public Personne findById(int idPersonne) {
+    public Personne findById(long idPersonne) {
         Personne personne = entityManager.find(Personne.class, idPersonne);
         return personne;
     }
 
     @Override
     public void save(Personne user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                entityManager.persist(user); 
     }
 
     @Override

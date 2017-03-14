@@ -14,7 +14,12 @@ import java.util.List;
  */
 public interface UserService {
     
-    	Personne findById(int id);
+    /**
+     *
+     * @param id
+     * @return une personne par son identifiant
+     */
+    Personne findById(long id);
 	
 	//User findBySSO(String sso);
 	

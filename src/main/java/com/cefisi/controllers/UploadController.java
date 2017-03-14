@@ -5,14 +5,10 @@
  */
 package com.cefisi.controllers;
 
-
-
 /**
  *
  * @author Vladimir
  */
-
-
 import com.cefisi.modeles.Equipe;
 import com.cefisi.modeles.Personne;
 import com.cefisi.modeles.UploadFile;
@@ -48,75 +44,72 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  */
 @Controller
 public class UploadController {
-    
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Autowired
     UserService userService;
 
-	@RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.GET)
-	public String showUploadForm(HttpServletRequest request,  ModelMap map , @PathVariable(value = "idEquipe") long idEquipe ) {
-            Personne auteur =  (Personne) userService.getCurrentUser();
-            Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-            map.put("equipe", equipe);
-            map.put("action", /*"Upload"*/"upload-"+idEquipe);
-            map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
-            System.out.println("Saving file: " + auteur.getNom());
-		return "formUpload";
-	}
+    @RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.GET)
+    public String showUploadForm(HttpServletRequest request, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe) {
+        Equipe equipe = entityManager.find(Equipe.class, idEquipe);
+        map.put("equipe", equipe);
+        map.put("action", "upload-" + idEquipe);
+        map.put("titre", "Ajouter un document dans l'equipe " + equipe.getId());
+        return "formUpload";
+    }
+
     @Transactional
     @RequestMapping(value = "/upload-{idEquipe}", method = RequestMethod.POST)
-    public String handleFileUpload(@Valid @ModelAttribute("uploadFile") UploadFile uploadFile,HttpServletRequest request, ModelMap map, 
-            @RequestParam CommonsMultipartFile[] fileUpload //, HttpSession session 
-    , @PathVariable(value = "idEquipe") long idEquipe
+    public String handleFileUpload(@Valid @ModelAttribute("uploadFile") UploadFile uploadFile, HttpServletRequest request, ModelMap map,
+            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session, @PathVariable(value = "idEquipe") long idEquipe
     ) throws SQLException {
-        Personne auteur =  (Personne) userService.getCurrentUser(); //session.getAttribute("user"); 
+        Personne auteur = userService.getCurrentUser();//(Personne) session.getAttribute("user");
         Equipe equipe = entityManager.find(Equipe.class, idEquipe);
-            map.put("action", /*"Upload"*/"upload-"+idEquipe);
-            map.put("titre", "Ajouter un document dans l'equipe "+equipe.getId());
+        map.put("action", "upload-" + idEquipe);
+        map.put("titre", "Ajouter un document dans l'equipe " + equipe.getId());
         if (fileUpload != null && fileUpload.length > 0) {
-            for (CommonsMultipartFile aFile : fileUpload){
-                 
-                System.out.println("Saving file: " + aFile.getOriginalFilename() +aFile.getContentType());
-                
-               // UploadFile uploadFile = new UploadFile();
+            for (CommonsMultipartFile aFile : fileUpload) {
+
+                System.out.println("Saving file: " + aFile.getOriginalFilename() + aFile.getContentType());
+
+                // UploadFile uploadFile = new UploadFile();
                 uploadFile.setAuteur(auteur);
                 uploadFile.setEquipe(equipe);
                 uploadFile.setFileName(aFile.getOriginalFilename());
                 uploadFile.setType(aFile.getContentType());
                 uploadFile.setData(aFile.getBytes());
                 uploadFile.setDateAjout(new Date(Calendar.getInstance().getTimeInMillis()));
-                entityManager.persist(uploadFile); 
+                entityManager.persist(uploadFile);
             }
         }
- 
-        return "redirect:/equipe-"+idEquipe;
-    }	
- 
-    @RequestMapping(value = { "/download-document-{id}" }, method = RequestMethod.GET)
-	public String downloadDocument( @PathVariable(value = "id") long id,HttpServletResponse response ,
-              ModelMap map //,  BindingResult result
-          ) throws  IOException {
-		UploadFile document = entityManager.find(UploadFile.class, id);
-		response.setContentType(document.getType());
+
+        return "redirect:/equipe-" + idEquipe;
+    }
+
+    @RequestMapping(value = {"/download-document-{id}"}, method = RequestMethod.GET)
+    public String downloadDocument(@PathVariable(value = "id") long id, HttpServletResponse response,
+            ModelMap map //,  BindingResult result
+    ) throws IOException {
+        UploadFile document = entityManager.find(UploadFile.class, id);
+        response.setContentType(document.getType());
         response.setContentLength(document.getData().length);
-        response.setHeader("Content-Disposition","attachment; filename=\"" + document.getFileName() +"\"");
- 
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + document.getFileName() + "\"");
+
         FileCopyUtils.copy(document.getData(), response.getOutputStream());
-            map.put("action", "Download");
-            map.put("titre", "Download a file"+document.getFileName());
- 
- 		return null;
-	}
+        map.put("action", "Download");
+        map.put("titre", "Download a file" + document.getFileName());
 
+        return null;
+    }
 
-        
-        @Transactional
+    @Transactional
     @RequestMapping(value = "/delete-document-{id}", method = RequestMethod.GET)
-    public String deleteDoc(@Valid @ModelAttribute("uploadFile") UploadFile uploadFile,
-            BindingResult result, ModelMap map, @PathVariable(value = "id") long id
+    public String deleteDoc(@Valid
+            @ModelAttribute("uploadFile") UploadFile uploadFile,
+            BindingResult result, ModelMap map,
+            @PathVariable(value = "id") long id
     ) throws SQLException {
         uploadFile = entityManager.find(UploadFile.class, id);
         map.put("action", "Delete");
@@ -132,54 +125,51 @@ public class UploadController {
             System.out.println("ok");
             map.put("message", "la doc  a été bien suprimée");
         }
-        return "redirect:/equipe-"+uploadFile.getEquipe().getId();
+        return "redirect:/equipe-" + uploadFile.getEquipe().getId();
     }
-    
-    
-    
-    
-    
+
     @RequestMapping(value = "/upload-{idEquipe}/{id}-modify", method = RequestMethod.GET)
-	public String askModifyFile(HttpServletRequest request,  ModelMap map ,@PathVariable(value = "idEquipe") long idEquipe , @PathVariable(value = "id") long id ) {
-            UploadFile uploadFile = entityManager.find(UploadFile.class, id);
-            map.put("equipe", uploadFile);
-            map.put("action", "upload-"+idEquipe+"/"+id+"-modify");
-            map.put("titre", "Modifier le doc "+uploadFile.getId());
-		return "formUploadMod";
-	}
+    public String askModifyFile(HttpServletRequest request, ModelMap map, @PathVariable(value = "idEquipe") long idEquipe,
+            @PathVariable(value = "id") long id
+    ) {
+        UploadFile uploadFile = entityManager.find(UploadFile.class, id);
+        map.put("equipe", uploadFile);
+        map.put("action", "upload-" + idEquipe + "/" + id + "-modify");
+        map.put("titre", "Modifier le doc " + uploadFile.getId());
+        return "formUploadMod";
+    }
+
     @Transactional
     @RequestMapping(value = "/upload-{idEquipe}/{id}-modify", method = RequestMethod.POST)
-    public String doModifyFile(@Valid /* @ModelAttribute("uploadFile") */UploadFile uploadFile,
-            ModelMap map, 
+    public String doModifyFile(@Valid /* @ModelAttribute("uploadFile") */ UploadFile uploadFile,
+            ModelMap map,
             BindingResult result,
-            HttpServletRequest request, 
-
-            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session, @PathVariable(value = "idEquipe") long idEquipe ,@PathVariable(value = "id") long id 
+            HttpServletRequest request,
+            @RequestParam CommonsMultipartFile[] fileUpload, HttpSession session, @PathVariable(value = "idEquipe") long idEquipe,
+            @PathVariable(value = "id") long id
     ) throws SQLException {
-        Personne auteur =  (Personne) session.getAttribute("user"); 
-            map.put("action", "upload-"+idEquipe/id+"-modify");
-            map.put("titre", "Modifier le doc"+uploadFile.getId());
+        Personne auteur = userService.getCurrentUser();//(Personne) session.getAttribute("user");
+        map.put("action", "upload-" + idEquipe / id + "-modify");
+        map.put("titre", "Modifier le doc" + uploadFile.getId());
         if (fileUpload != null && fileUpload.length > 0) {
-            for (CommonsMultipartFile aFile : fileUpload){
-                 
-                System.out.println("update file: " + aFile.getOriginalFilename() +aFile.getContentType());
-                
+            for (CommonsMultipartFile aFile : fileUpload) {
+
+                System.out.println("update file: " + aFile.getOriginalFilename() + aFile.getContentType());
+
                 String sql = "UPDATE files_upload SET id_persoAjour=:idPersoMisAjr, file_name =:fileName, type=:type ,file_data=:fileData ,date_mise_jr=:dateMiseJr WHERE upload_id=:id";
-            Query query = entityManager.createNativeQuery(sql);
-            query.setParameter("idPersoMisAjr",auteur.getIdPersonne())
-                    .setParameter("fileName",aFile.getOriginalFilename())
-                    .setParameter("type",aFile.getContentType())
-                    .setParameter("fileData",aFile.getBytes())
-                    .setParameter("dateMiseJr",new Date(Calendar.getInstance().getTimeInMillis()))
-                    .setParameter("id", id);
-                 query.executeUpdate();
-               
+                Query query = entityManager.createNativeQuery(sql);
+                query.setParameter("idPersoMisAjr", auteur.getIdPersonne())
+                        .setParameter("fileName", aFile.getOriginalFilename())
+                        .setParameter("type", aFile.getContentType())
+                        .setParameter("fileData", aFile.getBytes())
+                        .setParameter("dateMiseJr", new Date(Calendar.getInstance().getTimeInMillis()))
+                        .setParameter("id", id);
+                query.executeUpdate();
 
             }
         }
- 
-        return "redirect:/equipe-"+idEquipe;
-    }	
-    
-}
 
+        return "redirect:/equipe-" + idEquipe;
+    }
+
+}

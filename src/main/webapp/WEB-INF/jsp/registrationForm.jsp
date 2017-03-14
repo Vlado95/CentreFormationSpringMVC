@@ -135,7 +135,7 @@
                 <form:errors path="fixe" cssClass="erreur"/>
                 </div>
             </div>
-      
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <button type="submit" class="btn btn-primary">${action}</button>
 
 

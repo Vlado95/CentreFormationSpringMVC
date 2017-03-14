@@ -60,6 +60,7 @@ public class EnvoiMail {
         mailServerProperties.put("mail.smtp.port", "587");
         mailServerProperties.put("mail.smtp.auth", "true");
         mailServerProperties.put("mail.smtp.starttls.enable", "true");
+        mailServerProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         System.out
                 .println("Les propriétés du serveur de messagerie ont été mis en place avec succès ...");
 
