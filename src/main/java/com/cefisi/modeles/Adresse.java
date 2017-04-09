@@ -138,6 +138,7 @@ public class Adresse {
     }
 
     public void setPersonnes(Set<Personne> personnes) {
+        System.out.println("com.cefisi.modeles.Adresse.setPersonnes()");
         this.personnes = personnes;
     }
     

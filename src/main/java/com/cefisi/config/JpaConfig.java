@@ -14,12 +14,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
+//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 
 @Configuration
 @EnableTransactionManagement
 //@ComponentScan("com.cefisi")
+//@EnableJpaRepositories(basePackages = "com.cefisi.dao")
 public class JpaConfig {
 
     @Bean
@@ -27,8 +29,8 @@ public class JpaConfig {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassName("com.mysql.jdbc.Driver");
         basicDataSource.setUrl("jdbc:mysql://localhost:3306/centre_formation");
-        basicDataSource.setUsername("cefisi");
-        basicDataSource.setPassword("MyPassword!");
+        basicDataSource.setUsername("root");
+        basicDataSource.setPassword("Kadoudou88");
 
         return basicDataSource;
     }
@@ -37,7 +39,7 @@ public class JpaConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
+        em.setDataSource(dataSource()); 
         em.setPackagesToScan("com.cefisi.modeles");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());

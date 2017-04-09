@@ -53,70 +53,70 @@
             <div class="form-group">
                 <label class="col-xs-3 control-label">Nom :</label>
                 <div class="col-xs-5">
-                <form:input path="nom" class="form-control"/>
+                <form:input path="nom" class="form-control" value="Teta"/>
                 <form:errors path="nom" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Prenom :</label>
                 <div class="col-xs-5">
-                <form:input path="prenom" class="form-control"/>
+                <form:input path="prenom" class="form-control"  value="Dorian"/>
                 <form:errors path="prenom" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">E-Mail :</label>
                 <div class="col-xs-5">
-                <form:input path="email" class="form-control"/>
+                <form:input path="email" class="form-control" value="tvradmir@yahoo.fr"/>
                 <form:errors path="email" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Confiramtion E-Mail :</label>
                 <div class="col-xs-5">
-                <form:input path="confirmEmail" class="form-control"/>
+                <form:input path="confirmEmail" class="form-control" value="tvradmir@yahoo.fr"/>
                 <form:errors path="confirmEmail" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Mot De Passe:</label>
                 <div class="col-xs-5">
-                <form:password path="password" class="form-control"/>
+                <form:password path="password" class="form-control" value="kaka"/>
                 <form:errors path="password" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Confirmation Mot de Passe :</label>
                 <div class="col-xs-5">
-                <form:password path="ConfirmPassword" class="form-control"/>
+                <form:password path="ConfirmPassword" class="form-control" value="kaka"/>
                 <form:errors path="ConfirmPassword" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Adresse :</label>
                 <div class="col-xs-5"> 
-                <form:textarea path="rue" class="form-control"/>
+                <form:textarea path="rue" class="form-control" value="7 toto"/>
                 <form:errors path="rue" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Code postal :</label>
                 <div class="col-xs-5">
-                <form:input path="codePostal" class="form-control"/>
+                <form:input path="codePostal" class="form-control" value="952"/>
                 <form:errors path="codePostal" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Ville :</label>
                 <div class="col-xs-5">
-                <form:input path="ville" class="form-control"/>
+                <form:input path="ville" class="form-control" value="boutb"/>
                 <form:errors path="ville" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Pays :</label>
                 <div class="col-xs-5">
-                <form:input path="pays" class="form-control"/>
+                <form:input path="pays" class="form-control" value="frznce"/>
                 <form:errors path="pays" cssClass="erreur"/>
                 </div>
             </div>
@@ -124,14 +124,14 @@
             <div class="form-group">
                 <label class="col-xs-3 control-label">Tél Mobile:</label>
                 <div class="col-xs-5">
-                <form:input path="mobile" class="form-control"/>
+                <form:input path="mobile" class="form-control" value="12788978"/>
                 <form:errors path="mobile" cssClass="erreur"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Tél Fixe :</label>
                 <div class="col-xs-5">
-                <form:input path="fixe" class="form-control"/>
+                <form:input path="fixe" class="form-control" value="12788978"/>
                 <form:errors path="fixe" cssClass="erreur"/>
                 </div>
             </div>

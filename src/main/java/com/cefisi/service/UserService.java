@@ -21,7 +21,7 @@ public interface UserService {
      */
     Personne findById(long id);
 	
-	//User findBySSO(String sso);
+	Personne  findByEmail(String email);
 	
 	void saveUser(Personne user);
 	
@@ -34,4 +34,6 @@ public interface UserService {
 	//boolean isUserSSOUnique(Integer id, String sso);
        
         Personne getCurrentUser(); 
+        
+        
 }

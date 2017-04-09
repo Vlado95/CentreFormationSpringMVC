@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
         return dao.getCurrentUser();
     }
 
+    @Override
+    public Personne findByEmail(String email) {
+        return dao.findByUserName(email);
+    }
+
 }
